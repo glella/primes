@@ -1,0 +1,9 @@
+[package]
+name = "primes_concurrent"
+version = "0.1.0"
+authors = ["guillermolella"]
+edition = "2018"
+
+[dependencies]
+rayon = "1.1"
+
