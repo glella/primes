@@ -1,6 +1,6 @@
 # primes
-Primes search using trial division - Multiple languages 
-Looks for Primes using Trial Division as consistently as possible across languages.
+Primes search using trial division - Multiple languages. 
+
 So far: Ruby, Python, C, C++, Objectice-C, Swift, Crystal, BASIC!, Java, Kotlin, Julia, Rust and Go.
 
 Impressive results using Go & Rust compared to C languages - Both are way faster than C.
