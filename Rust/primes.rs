@@ -10,13 +10,7 @@ fn my_is_prime(n: u64) -> bool {
         _even if n % 2 == 0 => false,
         _ => {
             let sqrt_limit = (n as f64).sqrt() as u64;
-            //(3..=sqrt_limit).step_by(2).find(|i| n % i == 0).is_none()
-            for i in (3..=sqrt_limit).step_by(2) {
-            	if n % i == 0 {
-            		return false;
-            	}
-            }
-            return true;
+            !(3..=sqrt_limit).step_by(2).any(|i| n % i == 0)
         }
     }
 }
