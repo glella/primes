@@ -1,5 +1,7 @@
 // prime search - trial division
 // understand optimal number of goroutines to use
+// for this case seems performance peaks at 2X number of logical cores
+// ie: cores 4, logical cores 8 ==> performance peaks when using 16 goroutines
 
 package main
 
@@ -135,6 +137,7 @@ func main() {
 		}
 
 		duration := time.Since(start) // End timer & duration
+		close(c)                      // close channel
 		elapsed := float64(duration) / float64(time.Millisecond)
 		elapsed = elapsed / 1000.0
 		fmt.Printf("Found %d primes.\n", len(result))
