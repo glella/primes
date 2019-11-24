@@ -48,11 +48,8 @@ fn make_range(min: u64, max: u64) -> Vec<u64> {
 	range
 }
 
-fn prep_search(n: u64) -> Vec<Vec<u64>> {
-	let text = prompt("Number of Threads to use? ");
-	let num_threads = get_int(&text);
-	//println!("Creating {} threads.", num_threads);
-
+fn prep_search(n: u64, num_threads: u64) -> Vec<Vec<u64>> {
+	
 	let range_size = n / num_threads;		// range sized divided evenly
 	let mut reminder = n % num_threads;			// reminder to be spread out
 
@@ -74,13 +71,54 @@ fn prep_search(n: u64) -> Vec<Vec<u64>> {
 	let mut max;
 
 	for i in range_sizes_vec {
-		max = min + i; // - 1;
+		max = min + i; 
 		let temp = make_range(min, max);
 		//println!("{:?}", temp);
 		vec_of_vec.push(temp);
-		min = max; // +1
+		min = max; 
 	}
 	vec_of_vec
+}
+
+fn search(vectors: Vec<Vec<u64>>) -> Vec<u64> {
+	let mut result: Vec<u64> = Vec::new();
+
+	// Channels - send and receive
+	let (tx, rx) = mpsc::channel();
+	let mut children = Vec::new();
+
+	let nthreads = vectors.len();
+
+	for segment in vectors {
+    	// The sender endpoint can be copied
+        let thread_tx = tx.clone();
+
+        // Each thread will send its results via the channel
+        let child = thread::spawn(move || {
+        	let mut temp: Vec<u64> = Vec::new();
+        	for i in segment {
+        		if is_prime(i) {
+        			temp.push(i);
+        		}
+        	}
+        	//println!("temp {:?}", temp);
+        	thread_tx.send(temp).unwrap();
+        });
+        	
+        children.push(child);
+    }
+        
+    // Here, all the messages are collected
+    for _ in 0..nthreads {
+    	result.append(&mut rx.recv().unwrap());
+    }
+          
+    // Wait for the threads to complete any remaining work
+    for child in children {
+        child.join().expect("oops! the child thread panicked");
+    }
+
+    result
 }
 
 
@@ -88,64 +126,20 @@ fn main() {
 
 	println!("Looks for prime numbers from 1 to your input");
 	let mut input = String::new();	
-	let mut result: Vec<u64> = Vec::new();
 	
 	loop {
 		input.clear();
-		result.clear();
+    	let mut input = prompt("Seek until what integer number? ");
+    	let num = get_int(&input); 
 
-		// Channels - send and receive
-		let (tx, rx) = mpsc::channel();
-		let mut children = Vec::new();
-		
-    	input = prompt("Seek until what integer number? ");
-    	let num = get_int(&input); //as u64;
+    	input = prompt("Number of Threads to use? ");
+		let threads = get_int(&input);
 
-    	let search_vectors = prep_search(num);
-    	//println!("{:?}", search_vectors);
-    	let nthreads = search_vectors.len();
-
+    	let search_vectors = prep_search(num, threads);
+    	
     	let now = Instant::now(); // start timer
     	
-    	for segment in search_vectors {
-    		// The sender endpoint can be copied
-        	let thread_tx = tx.clone();
-
-        	// Each thread will send its results via the channel
-        	let child = thread::spawn(move || {
-        		let mut temp: Vec<u64> = Vec::new();
-        		for i in segment {
-        			if is_prime(i) {
-        				temp.push(i);
-        			}
-        		}
-        		//println!("temp {:?}", temp);
-        		thread_tx.send(temp).unwrap();
-        	});
-        	
-        	children.push(child);
-    	}
-        
-    	// Here, all the messages are collected
-    	for _ in 0..nthreads {
-    		result.append(&mut rx.recv().unwrap());
-            
-            //Can do it too by creating another temporary vector but not needed:
-            //println!("Got: {:?}", rx.recv().unwrap());
-            //let mut temp = Vec::new();
-            //temp.push(rx.recv().unwrap());
-            //result.extend(temp);
-            //for mut v in temp {
-                //result.append(&mut v);
-    	    //}
-        }
-        
-        
-    	// Wait for the threads to complete any remaining work
-    	for child in children {
-        	child.join().expect("oops! the child thread panicked");
-    	}
-
+    	let result = search(search_vectors); // perform the actual work
 
     	let elapsed = now.elapsed(); // check time elapsed
     	let sec = (elapsed.as_secs() as f64) + (elapsed.subsec_nanos() as f64 / 1000_000_000.0);
@@ -166,3 +160,70 @@ fn main() {
     }
 
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	static FIRST_25_PRIMES: [u64; 25] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+	static TEST_RANGE: [u64; 14] = [11, 12, 13, 14, 15 , 16, 17, 18, 19, 20, 21, 22, 23, 24];
+
+	fn vec_compare(va: &[u64], vb: &[u64]) -> bool {
+    (va.len() == vb.len()) &&  	// zip stops at the shortest
+     va.iter()					// creates iterator of first vec
+       .zip(vb)					// zips up two iterators into a single iterator of pairs tuple
+       .all(|(a,b)| a == b)		// tests if every element of the iterator matches a predicate
+	}
+	
+    #[test]
+    fn is_prime_works() {
+    	//let first_25_primes: Vec<u64> = FIRST_25_PRIMES.to_vec();
+        let mut test_results: Vec<u64> = Vec::new();
+        for i in 1..=100 {
+        	if is_prime(i) {
+        		test_results.push(i);
+        	}
+        }
+        assert!(vec_compare(&test_results, &FIRST_25_PRIMES));
+    }
+
+    #[test]
+    fn get_int_works() {
+    	assert_eq!(get_int(&"42"), 42);
+    }
+
+    #[test]
+    fn make_range_works() {
+    	let range = make_range(11, 25);
+    	assert!(vec_compare(&range, &TEST_RANGE), "Got {:?}", range);
+    }
+
+    #[test]
+    fn prep_search_works() {
+    	// create vector of vector to compare to
+    	let mut vectors = Vec::new();
+    	vectors.push(make_range(1,35));			// 1 - 34
+    	vectors.push(make_range(35,68));		// 35 - 67
+    	vectors.push(make_range(68,101));		// 68 - 100
+    	
+    	// try the function up to 100 to compae to hardcoded values using 3 threads
+    	// so we can compare vs the hardcoded split above (used 3 so we made it short and simple)
+    	let test_vectors = prep_search(100, 3);
+
+    	for (i, vector) in test_vectors.iter().enumerate() {
+    		assert!(vec_compare(&vector, &vectors[i]), "Got {:?}", vector);
+    	}
+    }
+
+    #[test]
+    fn run_using_threads_works() {
+    	// so we can compare to our hardcoded values we search to 100 using 6 threads just because
+    	let search_vectors = prep_search(100, 6);
+
+		let mut test_result = search(search_vectors);
+    	test_result.sort();		// sort numbers for the compare - that why it was stored in a mutable vec
+
+    	assert!(vec_compare(&test_result, &FIRST_25_PRIMES), "Got {:?}", test_result);
+    }
+}
+
