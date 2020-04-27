@@ -48,7 +48,8 @@ C is the king of speed on 1 thread with NASM close behind, but in mutithreaded c
 | GO    | 2.2 MB    | 0.308 sec | 0.074 sec  |
 
 
-Bottom line, this is my first and probably last experiment with Assembly. If you are not working on firmware or on hardware there are no othe compilers for, it is needed, but in any other language a problem like this is trivial but doing it on NASM it is not. In any case, it is great to better grasp what is being done for you behind the scenes and to better understand language design and needs.
+Bottom line, this is my first and probably last experiment with Assembly. If you are not working on firmware or on hardware there are no compilers for it is needed, but in any other language a problem like this is trivial but doing it on NASM it is not. In any case, it is great to better grasp what is being done for you behind the scenes and to better understand language design and needs.
+Invaluable tool: Compiler Explorer https://gcc.godbolt.org/
 
 -----------------------------------------------
 
