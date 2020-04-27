@@ -40,18 +40,17 @@ Short compare of exec sizes and time it took to search primes until 1M.
 C is the king of speed on 1 thread with NASM close behind, but in mutithreaded code Go and Rust beats them both easily. (BTW, it is surprising the size of GO's executable given the added runtime).
 
 
-macOS     Exec size     1 thread      16 threads
-
-NASM      14  KB        0.125 sec     -
-
-C         18  KB        0.100 sec     -
-
-Rust      321 KB        0.334 sec     0.061 sec
-
-GO        2.2 MB        0.308 sec     0.074 sec
+| macOS | Exec size | 1 thread  | 16 threads |
+|-------|-----------|-----------|------------|
+| NASM  | 14  KB    | 0.125 sec |     -      |
+| C     | 18  KB    | 0.100 sec |     -      |
+| Rust  | 321 KB    | 0.334 sec | 0.061 sec  |
+| GO    | 2.2 MB    | 0.308 sec | 0.074 sec  |
 
 
 Bottom line, this is my first and probably last experiment with Assembly. If you are not working on firmware or on hardware there are no othe compilers for, it is needed, but in any other language a problem like this is trivial but doing it on NASM it is not. In any case, it is great to better grasp what is being done for you behind the scenes and to better understand language design and needs.
+
+-----------------------------------------------
 
 So far I like Go's simplicity but I am in love with Rust, its very helpful compiler, and its very straightforward model that helps you avoid many errors. If its compiles it runs like a charm with no surprises. 
 It helps that it is also very fast....;-)
