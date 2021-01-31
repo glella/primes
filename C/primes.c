@@ -24,11 +24,10 @@ int GetCommand( void ) {
 
 
 /***> Main <***/
-int main(int argc, char *argv[])
-{
-#define kMaxNumber 50000000
-#define TRUE = 1
-#define FALSE = 0
+int main(int argc, char *argv[]) {
+    #define kMaxNumber 50000000
+    #define TRUE = 1
+    #define FALSE = 0
 
     int         i,n, cant, num;
     //long int    num;

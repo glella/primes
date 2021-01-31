@@ -42,7 +42,8 @@ fn get_int(s: &str) -> u64 {
 
 fn make_range(min: u64, max: u64) -> Vec<u64> {
 	let mut range = Vec::new();
-	for i in min..max {
+	//for i in min..max {
+    for i in (min..max).filter(|x| x % 2 == 1) { // Add only odd numbers
 		range.push(i);
 	}
 	range
@@ -82,6 +83,7 @@ fn prep_search(n: u64, num_threads: u64) -> Vec<Vec<u64>> {
 
 fn search(vectors: Vec<Vec<u64>>) -> Vec<u64> {
 	let mut result: Vec<u64> = Vec::new();
+    result.push(2);
 
 	// Channels - send and receive
 	let (tx, rx) = mpsc::channel();
