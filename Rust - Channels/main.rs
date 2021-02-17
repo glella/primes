@@ -22,29 +22,24 @@ use std::time::Instant;
 //     }
 // }
 
+// avoid using sqrt - test now fails because we start at 3 and we miss 2
 fn is_prime(n: u32) -> bool {
     match n {
         0 | 1 => false,
         2 => true,
-        _even if n % 2 == 0 => false,
+        //_even if n % 2 == 0 => false,
         _ => {
-            // 3 ways to do it: aping C styled for loops and avoid sqrt more efficient
-            // let sqrt_limit = (n as f32).sqrt() as u32;
-            // !(3..=sqrt_limit).step_by(2).any(|i| n % i == 0)
-            // for i in (3..).take_while(|i| i*i <= n) {
+            !(3..).step_by(2).take_while(|i| i*i <= n).any(|i| n % i == 0)
+
+            // Another way: aping C styled for loops 
+            // let mut i = 3;
+            // while i * i <= n {
             //     if n % i == 0 {
             //         return false
             //     }
+            //     i += 2;
             // }
-            // return true 
-            let mut i = 3;
-            while i * i <= n {
-                if n % i == 0 {
-                    return false
-                }
-                i += 2;
-            }
-           return true
+            // return true
         }
     }
 }
