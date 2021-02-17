@@ -6,8 +6,21 @@ use std::sync::mpsc;
 use std::io;
 use std::io::Write; // <--- bring flush() into scope
 use std::time::Instant;
-//use integer_sqrt::IntegerSquareRoot;
+//use integer_sqrt::IntegerSquareRoot;  // add to dependencies: integer-sqrt = "0.1.5"
 
+
+// fn is_prime(n: u32) -> bool {
+//     match n {
+//         0 | 1 => false,
+//         2 => true,
+//         _even if n % 2 == 0 => false,
+//         _ => {
+//             let sqrt_limit = (n as f32).sqrt() as u32;
+//             //let sqrt_limit = n.integer_sqrt();
+//             !(3..=sqrt_limit).step_by(2).any(|i| n % i == 0)             
+//         }
+//     }
+// }
 
 fn is_prime(n: u32) -> bool {
     match n {
@@ -15,9 +28,23 @@ fn is_prime(n: u32) -> bool {
         2 => true,
         _even if n % 2 == 0 => false,
         _ => {
-            let sqrt_limit = (n as f32).sqrt() as u32;
-            //let sqrt_limit = n.integer_sqrt();
-            !(3..=sqrt_limit).step_by(2).any(|i| n % i == 0)            
+            // 3 ways to do it: aping C styled for loops and avoid sqrt more efficient
+            // let sqrt_limit = (n as f32).sqrt() as u32;
+            // !(3..=sqrt_limit).step_by(2).any(|i| n % i == 0)
+            // for i in (3..).take_while(|i| i*i <= n) {
+            //     if n % i == 0 {
+            //         return false
+            //     }
+            // }
+            // return true 
+            let mut i = 3;
+            while i * i <= n {
+                if n % i == 0 {
+                    return false
+                }
+                i += 2;
+            }
+           return true
         }
     }
 }
