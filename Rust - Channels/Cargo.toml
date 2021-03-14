@@ -1,5 +1,5 @@
 [package]
-name = "primes_threads"
+name = "primes_chan_isqrt"
 version = "0.1.0"
 authors = ["Guillermo Lella <arkorott@gmail.com>"]
 edition = "2018"

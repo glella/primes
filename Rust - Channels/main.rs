@@ -72,8 +72,7 @@ fn make_range(min: u32, max: u32) -> Vec<u32> {
 }
 
 fn prep_search(n: u32, num_threads: u32) -> Vec<Vec<u32>> {
-	
-	let range_size = n / num_threads;		// range sized divided evenly
+	let range_size = n / num_threads;		// range size divided evenly
 	let mut reminder = n % num_threads;		// reminder to be spread out
 
 	let mut range_sizes_vec = Vec::new();	// vector to hold each range size
@@ -111,7 +110,7 @@ fn search(vectors: Vec<Vec<u32>>) -> Vec<u32> {
 	let (tx, rx) = mpsc::channel();
 	let mut children = Vec::new();
 
-	let nthreads = vectors.len();
+	let nthreads = vectors.len();			// 1 thread per vector
 
 	for segment in vectors {
     	// The sender endpoint can be copied
@@ -147,7 +146,6 @@ fn search(vectors: Vec<Vec<u32>>) -> Vec<u32> {
 
 
 fn main() {
-
 	println!("Looks for prime numbers from 1 to your input");
 	let mut input = String::new();	
 	
@@ -180,10 +178,9 @@ fn main() {
     		break;
     	}
     	println!("");
-
     }
-
 }
+
 
 #[cfg(test)]
 mod tests {
