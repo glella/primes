@@ -19,12 +19,12 @@ def is_prime?(n)
 	return true
 end
 
-# create array of only odd numbers - exclusive of high value
+# create array of only odd numbers - do not include upper limit
 def make_range(min, max)
-	return (min...max).to_a.select {|i| i.odd? }
+	return (min...max).to_a.select { |i| i.odd? }
 end
 
-# divide numbers to test by the number of threads
+# divide numbers to search by the number of threads
 def prep_search(n, threads)
 	range_size = n // threads
 	reminder = n % threads
@@ -35,7 +35,7 @@ def prep_search(n, threads)
 		range_sizes_arr << range_size
 	}
 
-	#spread the reminder
+	#spread the reminder - doint it with map! was cumbersome
 	counter = 0
 	while reminder > 0
 		range_sizes_arr[counter] += 1
@@ -57,36 +57,35 @@ def prep_search(n, threads)
 
 end
 
-
-# do the actual search using threads
+# do the actual search using fibers
 def search(ranges)
 	result = Array(Int32).new
-	result << 2
-	ch = Channel(Int32).new(16)
+	result << 2 				# manually insert 2 as we start doing math with odd numbers
+	ch = Channel(Int32).new(16) # different buffer sizes no appreciable difference
 
 	# start threads
-	ranges.each { |segment|
+	ranges.each { |segment|		# for each subarray create a new fiber
 		spawn do
 			segment.each { |i|
 				if is_prime?(i)
 					ch.send(i)
 				else
-					ch.send(-1)
-				end
-			}
+					ch.send(-1)	# should not need to do this but had to balance same number
+				end				# of send and receives. Do not know if there is something
+			}					# like a waitgroup
 		end
 	}
 
 	# receive
 	ranges.each { |segment|
 		segment.each { |i|
-			#result << ch.receive
+			#result << ch.receive # this is slower as we have to later eliminate -1 from array
 			temp = ch.receive
-			result << temp if temp > 0	
+			result << temp if temp > 0	# just avoid adding the -1 numbers
 		}
 	}
 	
-	#return result.select { |i| i > 0 }
+	#return result.select { |i| i > 0 } # so we don't need to do this
 	result
 end
 
@@ -119,6 +118,7 @@ def eratosthenes(n)
   	nums.compact
 end
 
+# here is "main"
 puts "Returns a list of prime numbers from 1 to < n using trial division algorithm."
 n = (prompt "Input limit: ").try &.to_i?
 if !n
@@ -149,7 +149,7 @@ if answer
 	puts list.inspect if answer.strip == "y"
 end
 
-# testing
+# tests
 # puts "testing is_prime?"
 # puts "2 is true" if is_prime?(2)
 # puts "4 is false" if !is_prime?(4)
