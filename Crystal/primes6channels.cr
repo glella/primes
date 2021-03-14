@@ -61,31 +61,51 @@ end
 def search(ranges)
 	result = Array(Int32).new
 	result << 2 				# manually insert 2 as we start doing math with odd numbers
-	ch = Channel(Int32).new(16) # different buffer sizes no appreciable difference
+	#ch = Channel(Int32).new(16) # different buffer sizes no appreciable difference
+	ch = Channel(Array(Int32)).new(16)
 
+	# this is done number by number
+	# # start threads
+	# ranges.each { |segment|		# for each subarray create a new fiber
+	# 	spawn do
+	# 		segment.each { |i|
+	# 			if is_prime?(i)
+	# 				ch.send(i)
+	# 			else
+	# 				ch.send(-1)	# should not need to do this but had to balance same number
+	# 			end				# of send and receives. Do not know if there is something
+	# 		}					# like a waitgroup
+	# 	end
+	# }
+
+	# # receive
+	# ranges.each { |segment|
+	# 	segment.each { |i|
+	# 		#result << ch.receive # this is slower as we have to later eliminate -1 from array
+	# 		temp = ch.receive
+	# 		result << temp if temp > 0	# just avoid adding the -1 numbers
+	# 	}
+	# }
+
+	# this is done 1 array at a time - much less messages through the channels
 	# start threads
 	ranges.each { |segment|		# for each subarray create a new fiber
 		spawn do
+			temp = [] of Int32
 			segment.each { |i|
-				if is_prime?(i)
-					ch.send(i)
-				else
-					ch.send(-1)	# should not need to do this but had to balance same number
-				end				# of send and receives. Do not know if there is something
-			}					# like a waitgroup
+				temp << i if is_prime?(i)	
+			}
+			ch.send(temp)					
 		end
 	}
 
 	# receive
 	ranges.each { |segment|
-		segment.each { |i|
-			#result << ch.receive # this is slower as we have to later eliminate -1 from array
-			temp = ch.receive
-			result << temp if temp > 0	# just avoid adding the -1 numbers
-		}
+		#temp = ch.receive
+		#result += temp
+		result += ch.receive
 	}
 	
-	#return result.select { |i| i > 0 } # so we don't need to do this
 	result
 end
 
