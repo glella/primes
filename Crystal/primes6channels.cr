@@ -1,8 +1,8 @@
 #! /usr/bin/env ruby
 # bash:
-# CRYSTAL_WORKERS=4; crystal build --release -Dpreview_mt -o primes6 primes6channels.cr 
+# CRYSTAL_WORKERS=16; crystal build --release -Dpreview_mt -o primes6 primes6channels.cr 
 # fish:
-# set CRYSTAL_WORKERS 4
+# set CRYSTAL_WORKERS 16
 # crystal build --release -Dpreview_mt -o primes6 primes6channels.cr 
 
 def prompt(*args)
