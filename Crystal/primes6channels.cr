@@ -80,11 +80,14 @@ def search(ranges)
 	# receive
 	ranges.each { |segment|
 		segment.each { |i|
-			result << ch.receive
+			#result << ch.receive
+			temp = ch.receive
+			result << temp if temp > 0	
 		}
 	}
 	
-	return result.select { |i| i > 0 }
+	#return result.select { |i| i > 0 }
+	result
 end
 
 
