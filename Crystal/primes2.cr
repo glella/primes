@@ -1,3 +1,4 @@
+#! /usr/bin/env ruby
 
 def prompt(*args)
     print(*args)
@@ -8,7 +9,7 @@ def getPrimeList(n)
 	return Array(Int32).new if n < 2
 	result = [2]
 
-	# do only odd numbers starting at 5
+	# do only odd numbers starting at 3
 	odd = (3...n).step(2).to_a
 
 	odd.each do |i|

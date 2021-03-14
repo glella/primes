@@ -1,24 +1,32 @@
+// Eratosthenes
 
 use std::thread;
 use std::sync::mpsc;
 use std::io;
 use std::io::Write; // <--- bring flush() into scope
 use std::time::Instant;
-//use integer_sqrt::IntegerSquareRoot;  // add to dependencies: integer-sqrt = "0.1.5"
 
+fn eratosthenes(n: u32) -> Vec<usize> {
+    let arrsize = n as usize;
+    if n < 2 {
+        Vec::new()
+    } else {
+        let mut result = vec![true; arrsize + 1 - 2];
+        let limit = (n as f64).sqrt() as usize;
+        for i in 2..limit + 1 {
+            let mut it = result[i - 2..].iter_mut().step_by(i);
+            if let Some(true) = it.next() {
+                it.for_each(|x| *x = false);
+            }
+        }
+        result
+    }
+    .into_iter()
+    .enumerate()
+    .filter_map(|(e, b)| if b { Some(e + 2) } else { None })
+    .collect()
+}
 
-// fn is_prime(n: u32) -> bool {
-//     match n {
-//         0 | 1 => false,
-//         2 => true,
-//         _even if n % 2 == 0 => false,
-//         _ => {
-//             let sqrt_limit = (n as f32).sqrt() as u32;
-//             //let sqrt_limit = n.integer_sqrt();
-//             !(3..=sqrt_limit).step_by(2).any(|i| n % i == 0) 			
-//         }
-//     }
-// }
 
 // avoid using sqrt - test now fails because we start at 3 and we miss 2
 fn is_prime(n: u32) -> bool {
@@ -29,15 +37,6 @@ fn is_prime(n: u32) -> bool {
         _ => {
             !(3..).step_by(2).take_while(|i| i*i <= n).any(|i| n % i == 0)
 
-            // Another way: aping C styled for loops 
-            // let mut i = 3;
-            // while i * i <= n {
-            //     if n % i == 0 {
-            //         return false
-            //     }
-            //     i += 2;
-            // }
-            // return true
         }
     }
 }
@@ -45,7 +44,6 @@ fn is_prime(n: u32) -> bool {
 fn prompt(s: &str) -> String {
 	print!("{}", s);
 	io::stdout().flush().unwrap(); // flush it to the screen 
-
 	let mut text = String::new();
 	io::stdin()
         	.read_line(&mut text)
@@ -71,14 +69,13 @@ fn make_range(min: u32, max: u32) -> Vec<u32> {
 	range
 }
 
-fn prep_search(n: u32, num_threads: u32) -> Vec<Vec<u32>> {
-	
-	let range_size = n / num_threads;		// range sized divided evenly
-	let mut reminder = n % num_threads;		// reminder to be spread out
+fn prep_search(n: u32, num_threads: u32) -> Vec<Vec<u32>> {	
+	let range_size = n / num_threads;		    // range sized divided evenly
+	let mut reminder = n % num_threads;			// reminder to be spread out
 
 	let mut range_sizes_vec = Vec::new();	// vector to hold each range size
 	for _i in 0..num_threads {
-		range_sizes_vec.push(range_size);	// initial size without reminder
+		range_sizes_vec.push(range_size);	        // initial size without reminder
 	}
 
 	// Spread the reminder
@@ -89,7 +86,7 @@ fn prep_search(n: u32, num_threads: u32) -> Vec<Vec<u32>> {
 		}
 	}
 
-	let mut vec_of_vec = Vec::new();		// vector of vectors to be returned
+	let mut vec_of_vec = Vec::new();	// vector of vectors to be returned
 	let mut min = 1;
 	let mut max;
 
@@ -105,7 +102,7 @@ fn prep_search(n: u32, num_threads: u32) -> Vec<Vec<u32>> {
 
 fn search(vectors: Vec<Vec<u32>>) -> Vec<u32> {
 	let mut result: Vec<u32> = Vec::with_capacity(80000);	// 78498 primes in 1M
-    result.push(2);                         // Add 2 as we removed even numbers from list
+    result.push(2);            // Add 2 as we removed even numbers from list
 
 	// Channels - send and receive
 	let (tx, rx) = mpsc::channel();
@@ -163,7 +160,8 @@ fn main() {
     	
     	let now = Instant::now(); // start timer
     	
-    	let result = search(search_vectors); // perform the actual work
+    	//let result = search(search_vectors); // perform the actual work
+        let result = eratosthenes(num);
 
     	let elapsed = now.elapsed(); // check time elapsed
     	let sec = (elapsed.as_secs() as f64) + (elapsed.subsec_nanos() as f64 / 1000_000_000.0);
