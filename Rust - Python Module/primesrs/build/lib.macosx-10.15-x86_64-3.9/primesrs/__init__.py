@@ -1,0 +1,1 @@
+from .primesrs import getlist

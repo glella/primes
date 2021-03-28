@@ -1,3 +1,5 @@
+// clang -O2 primes.c -o primes 
+
 #include <stdio.h>
 #import <time.h>
 #include <math.h>

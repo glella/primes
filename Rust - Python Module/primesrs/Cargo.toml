@@ -1,0 +1,19 @@
+[package]
+name = "primesrs"
+version = "0.1.0"
+authors = ["Guillermo Lella <arkorott@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+rayon = "1.5.0"
+
+[lib]
+crate-type = ["cdylib"]
+name = "primesrs"
+
+[dependencies.pyo3]
+version = "0.13.2"
+features = ["extension-module"]
+
+
+

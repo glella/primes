@@ -1,14 +1,52 @@
 # primes
 Primes search using trial division - Multiple languages. 
 
-So far: Ruby, Python, C, C++, Objectice-C, Swift, Crystal, BASIC!, Java, Kotlin, Julia, Rust, Go and Assembly (NASM).
+Simple exercise to play with different languages while benchmarking their performance on different devices. 
 
-I use this simple exercise to get a feel of different languages while benchmarking their performance on different devices. 
-Have run them on my MacBook Pro, Mate9, KeyOne, Note8, Essential PH-1, iPhone X (Pythonista), Gemini, Note9, iPhone 12 (using compiled libraries / native code in swift app).
-iPhone 12 faster than my Mac...incredible.
-On Android I use Termux. On Note 9 also used Linux on Dex, and Debian Linux on Gemini.
+Have run them on my MacBook Pro, Mate9, KeyOne, Note8, Essential PH-1, iPhone X (Pythonista), Gemini, Note9, iPhone 12 (using compiled libraries / native code in iOS app) -> faster than my Mac...incredible.
+Termux on Android. On Note 9 also used Linux on Dex, and Debian Linux on Gemini.
 
 -----------------------------------------------
+
+Results on a Late 2013 15" Macbook Pro (2.3 GHz Quad-Core i7 - 16GB RAM - Catalina):
+
+Time in secs.millisecs searching until 1M - Finding 78,498 primes: 
+
+Rust -> speed demon!
+
+
+| Language         | secs.millis |       comments        | compile / run command                       |
+| ---------------- | ----------- | --------------------- | ------------------------------------------- |
+| Python 3.9.2     |    2.329    | normal - sequential   | python primes.py                            |
+| Python 3.9.2 jit |    0.169    | using numba jit       | python primes_numba.py                      |
+| Python + Rust    |    0.042    | Rust Module & threads | python primes_rust_module.py                |
+| NASM 2.15.05     |    0.126    | sequential            | run: ./primes 1000000                       |
+| C clang 12.0.0   |    0.136    | sequential            | clang -O2 primes.c -o primes                |
+| C++ clang 12.0.0 |    0.140    | sequential            | clang++ -O2 primes.cpp -o primes            |
+| Objective-C      |    0.141    | sequential            | clang primes.m -fobjc-arc -fmodules         |
+|                  |             |                       | -mmacosx-version-min=10.6 -o primes         |
+| Ruby 3.0         |             | normal - sequential   | ruby fib.rb                                 |
+| Ruby 3.0 jit     |             | jit                   | ruby --jit-wait fib.rb                      |
+| Ruby 3.0 Eratos  |             | Eratosthenes          |                                             |
+| Ruby 3.0 Ractors |             | Ractors               |                                             |
+| Ruby + Rust      |             | using Rust & threads  |                                             |
+| Crystal 0.36.1   |             | normal - sequential   | crystal build --release -Dpreview_mt fib.cr |
+| Crystal Channels |             | channels              |                                             |
+| Crystal Eratos   |             | Eratosthenes          |                                             |
+| Rust 1.51.0      |             | sequential            | rustc -O fib.rs                             |
+| Rust Rayon       |             | rayon concurrency     |                                             |
+| Rust Channels    |             | channels              |                                             |
+| Rust Arc/Mutex   |             | threads               |                                             |
+| Rust Eratos      |             | Eratosthenes          |                                             |
+| Go 1.16.1        |             | normal - sequential   |                                             |
+| Go goroutines    |             | goroutines            | go build fib.go                             |
+| Swift 5.3.2      |             | normal - sequential   | (xcode release)                             |
+| Swift threads    |             | threads               |                                             |
+| Java             |             | sequential            |                                             |
+| Julia            |             |                       |                                             |
+| Kotlin           |             | sequential            |                                             |
+| Zig 0.8.0        |             |                       | zig build-exe fib.zig -O ReleaseSafe        |
+| V 0.2.2          |             |                       | v -autofree fib.v                           |
 
 Interesting concurrency side comments:
 

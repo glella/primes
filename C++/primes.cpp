@@ -1,3 +1,8 @@
+// 2 options to compile in terminal with not a sifnificant performance difference:
+// clang++ -O2 primes.cpp -o primes
+// clang++ -std=c++17 -stdlib=libc++ -g primes.cpp -o primes
+// compiled on xcode 3 times faster despite using same flags
+
 #include <iostream>
 #include <iomanip>
 #include <math.h>
@@ -9,7 +14,7 @@ int main()
 {
 	int 		cant, num, i, n, sq;
 	double 		elapsedTime;
-	int 		result[350000];
+	int 		result[100000];
 	bool 		isPrime;
 	clock_t 	start, end;
 	char 		response;
@@ -29,7 +34,8 @@ int main()
 	
 		for(i = 3; i <= num; i=i+2) {
 			isPrime = true;
-			sq = (int)sqrt(i);
+			//sq = (int)sqrt(i);
+			sq = (int)pow(i,0.5);
 		
 			for(n = 3; n <= sq; n=n+2)
 				if (i % n == 0)

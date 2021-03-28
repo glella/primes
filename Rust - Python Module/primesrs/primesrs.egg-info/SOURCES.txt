@@ -1,0 +1,7 @@
+setup.py
+primesrs/__init__.py
+primesrs.egg-info/PKG-INFO
+primesrs.egg-info/SOURCES.txt
+primesrs.egg-info/dependency_links.txt
+primesrs.egg-info/not-zip-safe
+primesrs.egg-info/top_level.txt

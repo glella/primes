@@ -1,0 +1,10 @@
+/Users/guillermolella/Documents/Programming/Git/primes/Rust - Python Module/primesrs/target/debug/deps/libghost-894c3ae91add2a69.dylib: /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/lib.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/args.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/derive.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/parse.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/variance.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/visibility.rs
+
+/Users/guillermolella/Documents/Programming/Git/primes/Rust - Python Module/primesrs/target/debug/deps/ghost-894c3ae91add2a69.d: /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/lib.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/args.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/derive.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/parse.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/variance.rs /Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/visibility.rs
+
+/Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/lib.rs:
+/Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/args.rs:
+/Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/derive.rs:
+/Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/parse.rs:
+/Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/variance.rs:
+/Users/guillermolella/.cargo/registry/src/github.com-1ecc6299db9ec823/ghost-0.1.2/src/visibility.rs:
