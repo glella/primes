@@ -1,11 +1,10 @@
+# ruby primes_erastosthenes.rb
 #! /usr/bin/env ruby
-
 
 def prompt(*args)
     print(*args)
     gets
 end
-
 
 def getPrimeList(n)
 	return [] if n < 2
@@ -22,7 +21,6 @@ def getPrimeList(n)
 	return result
 end
 
-
 def eratosthenes(n)
 	nums = [nil, nil, *2..n]
 
@@ -31,7 +29,6 @@ def eratosthenes(n)
   	end
   	nums.compact
 end
-
 
 puts "Returns a list of prime numbers from 1 to < n using trial division algorithm."
 n = (prompt "Input limit: ").to_i

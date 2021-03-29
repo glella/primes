@@ -12,41 +12,40 @@ Results on a Late 2013 15" Macbook Pro (2.3 GHz Quad-Core i7 - 16GB RAM - Catali
 
 Time in secs.millisecs searching until 1M - Finding 78,498 primes: 
 
-Rust -> speed demon!
 
-
-| Language         | secs.millis |       comments        | compile / run command                       |
-| ---------------- | ----------- | --------------------- | ------------------------------------------- |
-| Python 3.9.2     |    2.329    | normal - sequential   | python primes.py                            |
-| Python 3.9.2 jit |    0.169    | using numba jit       | python primes_numba.py                      |
-| Python + Rust    |    0.042    | Rust Module & threads | python primes_rust_module.py                |
-| NASM 2.15.05     |    0.126    | sequential            | run: ./primes 1000000                       |
-| C clang 12.0.0   |    0.136    | sequential            | clang -O2 primes.c -o primes                |
-| C++ clang 12.0.0 |    0.567    | sequential            | clang++ -O2 primes.cpp -o primes            |
-| Objective-C      |    0.141    | sequential            | clang primes.m -fobjc-arc -fmodules         |
-|                  |             |                       | -mmacosx-version-min=10.6 -o primes         |
-| Ruby 3.0         |             | normal - sequential   | ruby fib.rb                                 |
-| Ruby 3.0 jit     |             | jit                   | ruby --jit-wait fib.rb                      |
-| Ruby 3.0 Eratos  |             | Eratosthenes          |                                             |
-| Ruby 3.0 Ractors |             | Ractors               |                                             |
-| Ruby + Rust      |             | using Rust & threads  |                                             |
-| Crystal 0.36.1   |             | normal - sequential   | crystal build --release -Dpreview_mt fib.cr |
-| Crystal Channels |             | channels              |                                             |
-| Crystal Eratos   |             | Eratosthenes          |                                             |
-| Rust 1.51.0      |             | sequential            | rustc -O fib.rs                             |
-| Rust Rayon       |             | rayon concurrency     |                                             |
-| Rust Channels    |             | channels              |                                             |
-| Rust Arc/Mutex   |             | threads               |                                             |
-| Rust Eratos      |             | Eratosthenes          |                                             |
-| Go 1.16.1        |             | normal - sequential   |                                             |
-| Go goroutines    |             | goroutines            | go build fib.go                             |
-| Swift 5.3.2      |             | normal - sequential   | (xcode release)                             |
-| Swift threads    |             | threads               |                                             |
-| Java             |             | sequential            |                                             |
-| Julia            |             |                       |                                             |
-| Kotlin           |             | sequential            |                                             |
-| Zig 0.8.0        |             |                       | zig build-exe fib.zig -O ReleaseSafe        |
-| V 0.2.2          |             |                       | v -autofree fib.v                           |
+| Language         | secs.millis |       comments        | compile / run command                                         |
+| ---------------- | ----------- | --------------------- | ------------------------------------------------------------- |
+| Python 3.9.2     |    2.329    | normal - sequential   | python primes.py                                              |
+| Python 3.9.2 jit |    0.169    | using numba jit       | python primes_numba.py                                        |
+| Python + Rust    |    0.042    | Rust Module & threads | python primes_rust_module.py                                  |
+| NASM 2.15.05     |    0.126    | sequential            | run: ./primes 1000000                                         |
+| C clang 12.0.0   |    0.136    | sequential            | clang -O2 primes.c -o primes                                  |
+| C++ clang 12.0.0 |    0.567    | sequential            | clang++ -O2 primes.cpp -o primes                              |
+| Objective-C      |    0.141    | sequential            | clang primes.m -fobjc-arc -fmodules                           |
+|                  |             |                       | -mmacosx-version-min=10.6 -o primes                           |
+| Ruby 3.0         |    7.011    | normal - sequential   | ruby primes.rb                                                |
+| Ruby 3.0 jit     |    6.083    | jit                   | ruby --jit-wait primes.rb                                     |
+| Ruby 3.0 Eratos  |    0.445    | Eratosthenes          | ruby primes_erastosthenes.rb                                  |
+| Ruby 3.0 Ractors |   12.441    | Experimental Ractors  | Does not work well. Feature needs to mature                   |
+| Ruby + Rust      |             | using Rust & threads  |                                                               |
+| Crystal 0.36.1   |    0.200    | sequential            | crystal build --release -Dpreview_mt -o primes primes.cr      |
+| Crystal Channels |    0.055    | channels              | set CRYSTAL_WORKERS 16 or CRYSTAL_WORKERS=16                  |
+|                  |             |                       | crystal build --release -Dpreview_mt -o primes primes_chan.cr |
+| Crystal Eratos   |    0.050    | Eratosthenes          | crystal build --release -o primes primes_eratos.cr            |
+| Rust 1.51.0      |             | sequential            | rustc -O fib.rs                                               |
+| Rust Rayon       |             | rayon concurrency     |                                                               |
+| Rust Channels    |             | channels              |                                                               |
+| Rust Arc/Mutex   |             | threads               |                                                               |
+| Rust Eratos      |             | Eratosthenes          |                                                               |
+| Go 1.16.1        |             | normal - sequential   |                                                               |
+| Go goroutines    |             | goroutines            | go build fib.go                                               |
+| Swift 5.3.2      |             | normal - sequential   | (xcode release)                                               |
+| Swift threads    |             | threads               |                                                               |
+| Java             |             | sequential            |                                                               |
+| Julia            |             |                       |                                                               |
+| Kotlin           |             | sequential            |                                                               |
+| Zig 0.8.0        |             |                       | zig build-exe fib.zig -O ReleaseSafe                          |
+| V 0.2.2          |             |                       | v -autofree fib.v                                             |
 
 Interesting concurrency side comments:
 
