@@ -22,7 +22,7 @@ Rust -> speed demon!
 | Python + Rust    |    0.042    | Rust Module & threads | python primes_rust_module.py                |
 | NASM 2.15.05     |    0.126    | sequential            | run: ./primes 1000000                       |
 | C clang 12.0.0   |    0.136    | sequential            | clang -O2 primes.c -o primes                |
-| C++ clang 12.0.0 |    0.140    | sequential            | clang++ -O2 primes.cpp -o primes            |
+| C++ clang 12.0.0 |    0.567    | sequential            | clang++ -O2 primes.cpp -o primes            |
 | Objective-C      |    0.141    | sequential            | clang primes.m -fobjc-arc -fmodules         |
 |                  |             |                       | -mmacosx-version-min=10.6 -o primes         |
 | Ruby 3.0         |             | normal - sequential   | ruby fib.rb                                 |
