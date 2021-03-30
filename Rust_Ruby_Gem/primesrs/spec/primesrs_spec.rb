@@ -5,7 +5,7 @@ RSpec.describe Primesrs do
     expect(Primesrs::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "gets prime numbers" do
+    expect((Primesrs[10]).sort!).to match_array([2,3,5,7])
   end
 end

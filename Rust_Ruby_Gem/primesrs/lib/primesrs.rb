@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "primesrs/version"
+require "primesrs/ffi"
+require "primesrs/version"
 
 module Primesrs
-  class Error < StandardError; end
-  # Your code goes here...
+  def self.[](n)
+    search(n).to_a
+  end
 end

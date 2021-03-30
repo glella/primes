@@ -26,8 +26,8 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Ruby 3.0         |    7.011    | normal - sequential   | ruby primes.rb                                                |
 | Ruby 3.0 jit     |    6.083    | jit                   | ruby --jit-wait primes.rb                                     |
 | Ruby 3.0 Eratos  |    0.445    | Eratosthenes          | ruby primes_erastosthenes.rb                                  |
-| Ruby 3.0 Ractors |   12.441    | Experimental Ractors  | Does not work well. Feature needs to mature                   |
-| Ruby + Rust      |             | using Rust & threads  |                                                               |
+| Ruby 3.0 Ractors |   12.441    | Experimental Ractors  | Does not work well. Ractors feature needs to mature           |
+| Ruby + Rust      |    0.042    | using Rust & threads  | ruby primes.rb                                                |
 | Crystal 0.36.1   |    0.200    | sequential            | crystal build --release -Dpreview_mt -o primes primes.cr      |
 | Crystal Channels |    0.055    | channels              | set CRYSTAL_WORKERS 16 or CRYSTAL_WORKERS=16                  |
 |                  |             |                       | crystal build --release -Dpreview_mt -o primes primes_chan.cr |
