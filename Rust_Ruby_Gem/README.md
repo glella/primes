@@ -144,8 +144,8 @@ task default: :spec
 
 task :rust_build do
   `cargo rustc --release`
-  # move dylib to right place and change name
-  `mv -f ./target/release/libprimesrs.dylib ./lib/primesrs/libprimesrs.so` 
+  # move dylib to right place
+  `mv -f ./target/release/libprimesrs.dylib ./lib/primesrs` 
 end
 
 task :build => :rust_build
@@ -153,7 +153,7 @@ task :spec => :rust_build
 
 task :rust_clean do
   `cargo clean`
-  `rm -f ./lib/primesrs/libprimesrs.so` # Change here according to your OS.
+  `rm -f ./lib/primesrs/libprimesrs.dylib` # Change here according to your OS.
 end
 
 task :clean => :rust_clean
