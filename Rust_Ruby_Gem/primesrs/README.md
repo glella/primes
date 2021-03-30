@@ -22,8 +22,10 @@ Or install it yourself as:
 
 ## Usage
 
+```
 require 'Primesrs'
 list = Primesrs[100] # gives you a list with the fist 25 primes up to 100: 2, 3, 5, 7, etc.
+```
 
 ## Development
 
