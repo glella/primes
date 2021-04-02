@@ -2,7 +2,6 @@
 # ruby primes.rb
 require 'Primesrs'
 
-
 def prompt(*args)
     print(*args)
     gets
