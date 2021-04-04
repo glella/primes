@@ -33,10 +33,10 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 |                  |             |                       | crystal build --release -Dpreview_mt -o primes primes_chan.cr |
 | Crystal Eratos   |    0.050    | Eratosthenes          | crystal build --release -o primes primes_eratos.cr            |
 | Rust 1.51.0      |    0.131    | sequential            | cargo build --release                                         |
-| Rust Rayon       |             | rayon concurrency     |                                                               |
-| Rust Channels    |             | channels              |                                                               |
-| Rust Arc/Mutex   |             | threads               |                                                               |
-| Rust Eratos      |             | Eratosthenes          |                                                               |
+| Rust Rayon       |    0.041    | rayon concurrency     | cargo build --release                                         |
+| Rust Channels    |    0.029    | channels concurrency  | cargo build --release                                         |
+| Rust Arc/Mutex   |             | threads concurency    | cargo build --release                                         |
+| Rust Eratos      |             | Eratosthenes          | cargo build --release                                         |
 | Go 1.16.1        |             | normal - sequential   |                                                               |
 | Go goroutines    |             | goroutines            | go build fib.go                                               |
 | Swift 5.3.2      |             | normal - sequential   | (xcode release)                                               |
