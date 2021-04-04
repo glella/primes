@@ -1,6 +1,10 @@
+// compile to bytecode with:
+// javac Primes.java
+// execute in terminal:
+// java Primes
 import java.util.*;
 
-public class Primesjava
+public class Primes
 {
 	public static void main(String[] args)
 	{
@@ -38,7 +42,6 @@ public class Primesjava
 		
 		double elapsedTime = (System.nanoTime() - startTime) / 1E9;
 		
-
 		System.out.printf("Found %d primes.%n", result.size());
 		System.out.printf("Took %.3f seconds.%n", elapsedTime);
 		//System.out.println(result);

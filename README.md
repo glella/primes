@@ -41,40 +41,43 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Go goroutines    |    0.071    | goroutines            | go build primes.go                                            |
 | Swift 5.3.2      |             | normal - sequential   | (xcode release)                                               |
 | Swift threads    |             | threads               |                                                               |
-| Java             |             | sequential            |                                                               |
+| Java 14.0.1      |    0.121    | sequential            | javac Primes.java & java Primes                               |
+| Kotlin 1.4.32    |    0.139    | sequential            | kotlinc primes.kt -include-runtime -d primes.jar              |
+|                  |             |                       | java -jar primes.jar                                          |
 | Julia            |             |                       |                                                               |
-| Kotlin           |             | sequential            |                                                               |
 | Zig 0.8.0        |             |                       | zig build-exe fib.zig -O ReleaseSafe                          |
 | V 0.2.2          |             |                       | v -autofree fib.v                                             |
 
 
 Comments:
 
-- Rust is the strongest performer with a narrow speed lead when working sequentially that widens signifcantly when comparing concurrent versions. 
+- NASM, C, Rust, Java & Kotlin very close in performance single threaded.
+- Rust is the fastest when comparing concurrent versions. 
 - Crystal performed admirably compared to Go, C languages and Swift while being almost as fun to work with as Ruby.
 - Very easy to make Python Module and Ruby Gem in Rust landing these interpreted languages among the top performers.
-- Surprising size of GO's executable given the significant runtime.
+- Surprising size of GO's executable (2.1 MB), and Kotlin's bytecode (1.5 MB) given the significant runtimes.
 
 Time in millisecs - Multithreaded:
 
-| Pos |   Language    |  Time  | Exec size |
-| --- | ------------- | ------ | --------- |
-|  1  | Rust          |  29 ms |  321 KB   |
-|  2  | Ruby & Python |  42 ms |           |
-|  3  | Crystal       |  55 ms |  409 KB   |
-|  4  | Go            |  71 ms |  2.1 MB   |
-|  5  | Swift         |        |           |
-|     |               |        |           |
-|     | NASM size     |        |   14 KB   |
-|     | C    size     |        |   18 KB   |
+| Pos |   Language      |  Time  | Exec size |
+| --- | --------------- | ------ | --------- |
+|  1  | Rust            |  29 ms |  321 KB   |
+|  2  | Ruby & Python   |  42 ms |           |
+|  3  | Crystal         |  55 ms |  409 KB   |
+|  4  | Go              |  71 ms |  2.1 MB   |
+|  5  | Swift           |        |           |
+|     |                 |        |           |
+|     | NASM size       |        |   14 KB   |
+|     | C    size       |        |   18 KB   |
+|     | Kotlin bytecode |        |  1.5 MB   |
 
 
 - In Rust tried 3 approaches for concurrency:
 a) A Goroutines like message passing approach using channels. (“Do not communicate by sharing memory; instead, share memory by communicating.”) -> Seems the fastest.
-b) Using the Rayon Library which made it very easy to deploy.
+b) Using the Rayon Library which made it the easiest to deploy with almost no changes to code.
 c) Using Mutex & Arc. (Shared state concurrency - the opposite of Go's approach).
 
-- Go has its "green and low cost" Goroutines following the M:N model with M green threads per N operating system threads because it bundles a significant runtime in the binary to handle that.
+- Go has its "green and low cost" Goroutines following the M:N model with M green threads per N operating system threads because it bundles a significant runtime in the binary to handle that. Very easy to deploy.
 
 - Rust has a much simpler 1:1 model where each thread equates to an operating system thread as it tries to keep a very minimal runtime, with the Rayon library providing access to a model closer to Go ("It guarantees data-race free executions and takes advantage of parallelism when sensible, based on work-load at runtime.")
 
@@ -92,7 +95,6 @@ Invaluable tool: Compiler Explorer https://gcc.godbolt.org/
 
 I like Go's simplicity. Crystal is simpler and faster. Swift very nice to work with.
 
-But my language of choice is Rust: it has a very helpful compiler, awesome tools, very straightforward memory model that helps you to avoid many errors, good documentation and helpful community. 
-If its compiles it runs with no runtime surprises. It is fast and efficient.
+Language of choice: Rust -> gives you control and clarity of what you are doing, it has a very helpful compiler, awesome tools, great libraries, very straightforward memory model that helps you to avoid many errors, no significant runtime, good documentation and helpful community. If its compiles it runs with no runtime surprises, while being fast and efficient.
 
-When working on a new problem most of the time I find myself creating a prototype with Python or Ruby (now perhaps I will use Crystal), ocasionally making a Go implementation, but every time I end up writing it in Rust for optimal performance.
+When working on a new problem most of the time I find myself creating a prototype with Python or Ruby (now perhaps I will try using Crystal), but every time I end up writing it in Rust for optimal performance.
