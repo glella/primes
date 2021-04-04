@@ -37,8 +37,8 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Rust Channels    |    0.029    | channels concurrency  | cargo build --release                                         |
 | Rust Arc/Mutex   |    0.039    | threads concurency    | cargo build --release                                         |
 | Rust Eratos      |    0.006    | Eratosthenes          | cargo build --release                                         |
-| Go 1.16.1        |             | normal - sequential   |                                                               |
-| Go goroutines    |             | goroutines            | go build fib.go                                               |
+| Go 1.16.2        |    0.306    | normal - sequential   | go build primes.go                                            |
+| Go goroutines    |    0.071    | goroutines            | go build primes.go                                            |
 | Swift 5.3.2      |             | normal - sequential   | (xcode release)                                               |
 | Swift threads    |             | threads               |                                                               |
 | Java             |             | sequential            |                                                               |
@@ -62,7 +62,7 @@ Time in millisecs - Multithreaded:
 |  1  | Rust          |  29 ms |  321 KB   |
 |  2  | Ruby & Python |  42 ms |           |
 |  3  | Crystal       |  55 ms |  409 KB   |
-|  4  | Go            |  74 ms |  2.2 MB   |
+|  4  | Go            |  71 ms |  2.1 MB   |
 |  5  | Swift         |        |           |
 |     |               |        |           |
 |     | NASM size     |        |   14 KB   |

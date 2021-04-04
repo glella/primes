@@ -1,3 +1,4 @@
+// go build primes.go
 // prime search trail division - no concurrency
 
 package main
@@ -18,12 +19,10 @@ func IsPrime(n int) bool {
 	switch {
 	case n == 2:
 		return true
-	case n < 2 || n%2 == 0:
-		return false
-
+	//case n < 2 || n%2 == 0: // we skip testing even numbers
+	//return false
 	default:
-		var i int
-		for i = 3; i*i <= n; i += 2 {
+		for i := 3; i*i <= n; i += 2 {
 			if n%i == 0 {
 				return false
 			}
@@ -62,14 +61,13 @@ func main() {
 		text = prompt("Seek until what integer number?")
 		num = getInt(text)
 
-		start := time.Now() // Start timer
-
-		for i := 0; i < num; i++ {
+		start := time.Now()        // Start timer
+		result = append(result, 2) // append 2 manually as we start searching from 3
+		for i := 3; i < num; i += 2 {
 			if IsPrime(i) {
 				result = append(result, i)
 			}
 		}
-
 		duration := time.Since(start) // End timer & duration
 		elapsed := float64(duration) / float64(time.Millisecond)
 		elapsed = elapsed / 1000.0

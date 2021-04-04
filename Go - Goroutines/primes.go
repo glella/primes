@@ -1,7 +1,4 @@
-// prime search - trial division
-// understand optimal number of goroutines to use
-// for this case seems performance peaks at 2X number of logical cores
-// ie: cores 4, logical cores 8 ==> performance peaks when using 16 goroutines
+// go build primes.go
 
 package main
 
@@ -24,10 +21,8 @@ func IsPrime(n int) bool {
 		return true
 	case n < 2 || n%2 == 0:
 		return false
-
 	default:
-		var i int
-		for i = 3; i*i <= n; i += 2 {
+		for i := 3; i*i <= n; i += 2 {
 			if n%i == 0 {
 				return false
 			}
@@ -80,10 +75,8 @@ func prepSearch(n int) [][]int {
 	fmt.Printf("Logical CPUs: %d. Creating %d Goroutines.\n", runtime.NumCPU(), numCPUs)
 
 	rangesToSearchSlice := make([][]int, numCPUs)
-
 	rangeSize := n / numCPUs // divide the search evenly between CPUs
 	reminder := n % numCPUs  // calculate de reminder to be spread out
-
 	// Number of ranges to search evenly = number of CPUs
 	range_sizes := make([]int, numCPUs)
 	// Even numbers per range
@@ -104,7 +97,6 @@ func prepSearch(n int) [][]int {
 		rangesToSearchSlice[i] = rangeToSearch
 		min = max + 1
 	}
-
 	//fmt.Println(rangesToSearchSlice) // To test it worked properly
 	return rangesToSearchSlice
 }
