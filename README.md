@@ -32,7 +32,7 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Crystal Channels |    0.055    | channels              | set CRYSTAL_WORKERS 16 or CRYSTAL_WORKERS=16                  |
 |                  |             |                       | crystal build --release -Dpreview_mt -o primes primes_chan.cr |
 | Crystal Eratos   |    0.050    | Eratosthenes          | crystal build --release -o primes primes_eratos.cr            |
-| Rust 1.51.0      |             | sequential            | rustc -O fib.rs                                               |
+| Rust 1.51.0      |    0.131    | sequential            | cargo build --release                                         |
 | Rust Rayon       |             | rayon concurrency     |                                                               |
 | Rust Channels    |             | channels              |                                                               |
 | Rust Arc/Mutex   |             | threads               |                                                               |
