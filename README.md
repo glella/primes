@@ -36,7 +36,7 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Rust Rayon       |    0.041    | rayon concurrency     | cargo build --release                                         |
 | Rust Channels    |    0.029    | channels concurrency  | cargo build --release                                         |
 | Rust Arc/Mutex   |    0.039    | threads concurency    | cargo build --release                                         |
-| Rust Eratos      |             | Eratosthenes          | cargo build --release                                         |
+| Rust Eratos      |    0.006    | Eratosthenes          | cargo build --release                                         |
 | Go 1.16.1        |             | normal - sequential   |                                                               |
 | Go goroutines    |             | goroutines            | go build fib.go                                               |
 | Swift 5.3.2      |             | normal - sequential   | (xcode release)                                               |

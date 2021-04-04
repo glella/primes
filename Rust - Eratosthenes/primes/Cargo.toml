@@ -1,5 +1,5 @@
 [package]
-name = "eratosthenes"
+name = "primes"
 version = "0.1.0"
 authors = ["Guillermo Lella <arkorott@gmail.com>"]
 edition = "2018"
