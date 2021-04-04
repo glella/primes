@@ -44,9 +44,9 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Java 14.0.1      |    0.121    | sequential            | javac Primes.java & java Primes                               |
 | Kotlin 1.4.32    |    0.139    | sequential            | kotlinc primes.kt -include-runtime -d primes.jar              |
 |                  |             |                       | java -jar primes.jar                                          |
-| Julia            |             |                       |                                                               |
-| Zig 0.8.0        |             |                       | zig build-exe fib.zig -O ReleaseSafe                          |
-| V 0.2.2          |             |                       | v -autofree fib.v                                             |
+| Julia 1.6.0      |    0.162    | sequential            | julia primes.jl                                               |
+| Zig 0.8.0        |             |                       | zig build-exe primes.zig -O ReleaseSafe                       |
+| V 0.2.2          |             |                       | v -autofree primes.v                                          |
 
 
 Comments:

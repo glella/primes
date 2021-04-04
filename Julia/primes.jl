@@ -1,4 +1,5 @@
 #!/usr/bin/julia
+#julia primes.jl
 
 function Input(prompt)::String
     print(prompt)
