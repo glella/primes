@@ -1,0 +1,333 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F744B9CC261A36F600E82060 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F744B9CB261A36F600E82060 /* main.swift */; };
+		F744B9DB261A37A700E82060 /* PrimesCpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F744B9D4261A37A700E82060 /* PrimesCpp.cpp */; };
+		F744B9DC261A37A800E82060 /* PrimesC.c in Sources */ = {isa = PBXBuildFile; fileRef = F744B9D5261A37A700E82060 /* PrimesC.c */; };
+		F744B9DD261A37A800E82060 /* PrimesSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = F744B9D6261A37A700E82060 /* PrimesSwift.swift */; };
+		F744B9DE261A37A800E82060 /* SyncronizedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F744B9D7261A37A700E82060 /* SyncronizedArray.swift */; };
+		F744B9DF261A37A800E82060 /* PrimesObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = F744B9D8261A37A700E82060 /* PrimesObjC.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F744B9C6261A36F600E82060 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F744B9C8261A36F600E82060 /* swift_and_clang_primes */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swift_and_clang_primes; sourceTree = BUILT_PRODUCTS_DIR; };
+		F744B9CB261A36F600E82060 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		F744B9D3261A37A600E82060 /* swift_and_clang_primes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "swift_and_clang_primes-Bridging-Header.h"; sourceTree = "<group>"; };
+		F744B9D4261A37A700E82060 /* PrimesCpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrimesCpp.cpp; sourceTree = "<group>"; };
+		F744B9D5261A37A700E82060 /* PrimesC.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PrimesC.c; sourceTree = "<group>"; };
+		F744B9D6261A37A700E82060 /* PrimesSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimesSwift.swift; sourceTree = "<group>"; };
+		F744B9D7261A37A700E82060 /* SyncronizedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncronizedArray.swift; sourceTree = "<group>"; };
+		F744B9D8261A37A700E82060 /* PrimesObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrimesObjC.m; sourceTree = "<group>"; };
+		F744B9D9261A37A700E82060 /* PrimesC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrimesC.h; sourceTree = "<group>"; };
+		F744B9DA261A37A700E82060 /* PrimesCpp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PrimesCpp.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F744B9C5261A36F600E82060 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F744B9BF261A36F600E82060 = {
+			isa = PBXGroup;
+			children = (
+				F744B9CA261A36F600E82060 /* swift_and_clang_primes */,
+				F744B9C9261A36F600E82060 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F744B9C9261A36F600E82060 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F744B9C8261A36F600E82060 /* swift_and_clang_primes */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F744B9CA261A36F600E82060 /* swift_and_clang_primes */ = {
+			isa = PBXGroup;
+			children = (
+				F744B9CB261A36F600E82060 /* main.swift */,
+				F744B9D5261A37A700E82060 /* PrimesC.c */,
+				F744B9D9261A37A700E82060 /* PrimesC.h */,
+				F744B9D4261A37A700E82060 /* PrimesCpp.cpp */,
+				F744B9DA261A37A700E82060 /* PrimesCpp.hpp */,
+				F744B9D8261A37A700E82060 /* PrimesObjC.m */,
+				F744B9D6261A37A700E82060 /* PrimesSwift.swift */,
+				F744B9D7261A37A700E82060 /* SyncronizedArray.swift */,
+				F744B9D3261A37A600E82060 /* swift_and_clang_primes-Bridging-Header.h */,
+			);
+			path = swift_and_clang_primes;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F744B9C7261A36F600E82060 /* swift_and_clang_primes */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F744B9CF261A36F600E82060 /* Build configuration list for PBXNativeTarget "swift_and_clang_primes" */;
+			buildPhases = (
+				F744B9C4261A36F600E82060 /* Sources */,
+				F744B9C5261A36F600E82060 /* Frameworks */,
+				F744B9C6261A36F600E82060 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = swift_and_clang_primes;
+			productName = swift_and_clang_primes;
+			productReference = F744B9C8261A36F600E82060 /* swift_and_clang_primes */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F744B9C0261A36F600E82060 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					F744B9C7261A36F600E82060 = {
+						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
+					};
+				};
+			};
+			buildConfigurationList = F744B9C3261A36F600E82060 /* Build configuration list for PBXProject "swift_and_clang_primes" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F744B9BF261A36F600E82060;
+			productRefGroup = F744B9C9261A36F600E82060 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F744B9C7261A36F600E82060 /* swift_and_clang_primes */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F744B9C4261A36F600E82060 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F744B9DC261A37A800E82060 /* PrimesC.c in Sources */,
+				F744B9DF261A37A800E82060 /* PrimesObjC.m in Sources */,
+				F744B9DD261A37A800E82060 /* PrimesSwift.swift in Sources */,
+				F744B9CC261A36F600E82060 /* main.swift in Sources */,
+				F744B9DB261A37A700E82060 /* PrimesCpp.cpp in Sources */,
+				F744B9DE261A37A800E82060 /* SyncronizedArray.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F744B9CD261A36F600E82060 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F744B9CE261A36F600E82060 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		F744B9D0261A36F600E82060 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2C5BW4MB4V;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swift_and_clang_primes/swift_and_clang_primes-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F744B9D1261A36F600E82060 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2C5BW4MB4V;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swift_and_clang_primes/swift_and_clang_primes-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F744B9C3261A36F600E82060 /* Build configuration list for PBXProject "swift_and_clang_primes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F744B9CD261A36F600E82060 /* Debug */,
+				F744B9CE261A36F600E82060 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F744B9CF261A36F600E82060 /* Build configuration list for PBXNativeTarget "swift_and_clang_primes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F744B9D0261A36F600E82060 /* Debug */,
+				F744B9D1261A36F600E82060 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F744B9C0261A36F600E82060 /* Project object */;
+}
