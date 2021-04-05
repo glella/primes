@@ -40,7 +40,7 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Go 1.16.2        |    0.306    | normal - sequential   | go build primes.go                                            |
 | Go goroutines    |    0.071    | goroutines            | go build primes.go                                            |
 | Swift 5.3.2      |    0.310    | normal - sequential   | (xcode release)                                               |
-| Swift threads    |    0.092    | threads               |                                                               |
+| Swift threads    |    0.092    | threads               | (xcode release)                                               |
 | Java 14.0.1      |    0.121    | sequential            | javac Primes.java & java Primes                               |
 | Kotlin 1.4.32    |    0.139    | sequential            | kotlinc primes.kt -include-runtime -d primes.jar              |
 |                  |             |                       | java -jar primes.jar                                          |
