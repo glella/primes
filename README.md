@@ -46,16 +46,17 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 |                  |             |                       | java -jar primes.jar                                          |
 | Julia 1.6.0      |    0.162    | sequential            | julia primes.jl                                               |
 | Zig 0.8.0        |             |                       | zig build-exe primes.zig -O ReleaseSafe                       |
-| V 0.2.2          |             |                       | v -autofree primes.v                                          |
+| V 0.2.2          |    0.131    | sequential            | v -autofree primes.v                                          |
 
 
 Comments:
 
-- NASM, C languages, Rust, Java & Kotlin very close in performance single threaded.
+- NASM, C languages, Rust, Java, Kotlin & V very close in performance single threaded.
 - Rust is the fastest when comparing concurrent versions. 
 - Crystal performed admirably compared to Go, C languages and Swift while being almost as fun to work with as Ruby.
+- V was easy and fun to use. Needs to mature more and improve documentation / examples.
 - Very easy to make Python Module and Ruby Gem in Rust landing these interpreted languages among the top performers.
--> Short tutorial included in each folder
+-> Short tutorial included for each.
 - Surprising size of GO's executable (2.1 MB), and Kotlin's bytecode (1.5 MB) given the significant runtimes.
 
 Time in millisecs - Multithreaded:
@@ -94,8 +95,8 @@ Invaluable tool: Compiler Explorer https://gcc.godbolt.org/
 
 -----------------------------------------------
 
-I like Go's simplicity. Crystal is simpler and faster. Swift very nice to work with.
+I like Go's simplicity. Crystal is simpler and faster. Swift very nice to work with. V is not there yet.
 
-Language of choice: Rust -> gives you control and clarity of what you are doing, it has a very helpful compiler, awesome tools, great libraries, very straightforward memory model that helps you to avoid many errors, no significant runtime, good documentation and helpful community. If its compiles it runs with no runtime surprises, while being fast and efficient.
+Language of choice: Rust -> gives you control and clarity of what you are doing, it has a very helpful compiler, awesome tools, great libraries, very straightforward memory model that helps you to avoid many errors, no significant runtime, good documentation and helpful community. When programs compile they run with no runtime surprises. It is fast and efficient and keeps on improving at a fast pace.
 
 When working on a new problem most of the time I find myself creating a prototype with Python or Ruby (now perhaps I will try using Crystal), but every time I end up writing it in Rust for optimal performance.
