@@ -45,16 +45,17 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Kotlin 1.4.32    |    0.139    | sequential            | kotlinc primes.kt -include-runtime -d primes.jar              |
 |                  |             |                       | java -jar primes.jar                                          |
 | Julia 1.6.0      |    0.162    | sequential            | julia primes.jl                                               |
-| Zig 0.8.0        |             |                       | zig build-exe primes.zig -O ReleaseSafe                       |
+| Zig 0.8.0        |    0.135    | sequential            | zig build-exe primes.zig -O ReleaseSafe                       |
 | V 0.2.2          |    0.131    | sequential            | v -autofree primes.v                                          |
 
 
 Comments:
 
-- NASM, C languages, Rust, Java, Kotlin & V very close in performance single threaded.
+- NASM, C languages, Rust, Java, Kotlin, V and Zig very close in performance single threaded.
 - Rust is the fastest when comparing concurrent versions. 
 - Crystal performed admirably compared to Go, C languages and Swift while being almost as fun to work with as Ruby.
 - V was easy and fun to use. Needs to mature more and improve documentation / examples.
+- Did not enjoy Zig. Felt cumbersome and archaic (ie no strings, manual memory management) with no attached benefits compared to others. Took an eternity to code something this simple. Did not help that documentation needs to mature more.
 - Very easy to make Python Module and Ruby Gem in Rust landing these interpreted languages among the top performers.
 -> Short tutorial included for each.
 - Surprising size of GO's executable (2.1 MB), and Kotlin's bytecode (1.5 MB) given the significant runtimes.
@@ -71,7 +72,9 @@ Time in millisecs - Multithreaded:
 |     | Reference:      |        |           |
 |     |    NASM size    |        |   14 KB   |
 |     |    C    size    |        |   18 KB   |
-|     |    Kotlin byte  |        |  1.5 MB   |
+|     |    Kotlin bytec |        |  1.5 MB   |
+|     |    V            |        |  309 KB   |
+|     |    Zig          |        |  225 KB   |
 
 
 - In Rust tried 3 approaches for concurrency:
@@ -95,7 +98,7 @@ Invaluable tool: Compiler Explorer https://gcc.godbolt.org/
 
 -----------------------------------------------
 
-I like Go's simplicity. Crystal is simpler and faster. Swift very nice to work with. V is not there yet.
+I like Go's simplicity. Crystal is simpler and faster. Swift very nice to work with. V is not there yet but fun to use. Cannot think of a reason to use Zig - C replacement? I have Rust for that and is much more mature and robust in every sense plus faster and safer.
 
 Language of choice: Rust -> gives you control and clarity of what you are doing, it has a very helpful compiler, awesome tools, great libraries, very straightforward memory model that helps you to avoid many errors, no significant runtime, good documentation and helpful community. When programs compile they run with no runtime surprises. It is fast and efficient and keeps on improving at a fast pace.
 

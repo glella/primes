@@ -34,6 +34,6 @@ elapsed_time = end_time - start_time
 puts "found #{list.length} primes"
 printf("elapsed time: %5.3f s.\n", elapsed_time)
 
-#answer = prompt "Print them ? (y/n) "
-#puts list.inspect if answer.strip == 'y'
+answer = prompt "Print them ? (y/n) "
+puts list.inspect if answer.strip == 'y'
 
