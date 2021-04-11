@@ -53,9 +53,10 @@ fn make_range(min: u32, max: u32) -> Vec<u32> {
 // let v_chunked: Vec<Vec<i32>> = v.chunks(3).map(|x| x.to_vec()).collect();
 // println!("{:?}", v_chunked); // [[1, 1, 1], [2, 2, 2], [3, 3, 3]]
 
-// or with a vector of slices to avoid copying the data:
+// or with a vector of slices to avoid copying the data: - in both cases the reminder is put in an extra chunk
+// let v: Vec<i32> = vec![1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4];
 // let v_slices: Vec<&[i32]> = v.chunks(3).collect();
-// println!("{:?}", v_slices); // [[1, 1, 1], [2, 2, 2], [3, 3, 3]]
+// println!("{:?}", v_slices); // [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4]]
 
 fn prep_search(n: u32, num_threads: u32) -> Vec<Vec<u32>> {
     let range_size = n / num_threads; // range size divided evenly
