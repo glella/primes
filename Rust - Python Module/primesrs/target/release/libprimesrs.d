@@ -1,1 +1,0 @@
-/Users/guillermolella/Documents/Programming/Git/primes/Rust\ -\ Python\ Module/primesrs/target/release/libprimesrs.dylib: /Users/guillermolella/Documents/Programming/Git/primes/Rust\ -\ Python\ Module/primesrs/src/lib.rs

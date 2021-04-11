@@ -54,11 +54,11 @@ pub fn main() !void {
     while (true) {
         const num: u32 = try userInput("Seek until what integer number?: ");
         var result = try std.ArrayList(u32).initCapacity(allocator, 80000); // 78498 primes in 1M
-        try result.append(2); // add 2 manually as we start checking at 3
 
         // start the clock
         const timer: std.time.Timer = try std.time.Timer.start();
-
+        
+        try result.append(2); // add 2 manually as we start checking at 3
         var i: u32 = 3;
         while (i < num) : (i += 2) {
             if (isPrime(i)) {

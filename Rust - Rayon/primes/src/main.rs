@@ -1,12 +1,14 @@
 // cargo build --release
-extern crate rayon;
+//extern crate rayon;
 
 use std::io;
 use std::io::Write;
 use std::time::Instant; // <--- bring flush() into scope
 
 use rayon::prelude::*;
-use std::sync::{Arc, Mutex};
+// use std::sync::{Arc, Mutex};
+use parking_lot::Mutex;
+use std::sync::Arc;
 
 fn prompt(s: &str) -> String {
     print!("{}", s);
@@ -43,16 +45,16 @@ fn is_prime(n: u32) -> bool {
 fn search(n: u32) -> Vec<u32> {
     // Surround Vector in Arc-Mutex to be able to write to it concurrently / 78498 primes in 1M
     let result: Arc<Mutex<Vec<u32>>> = Arc::new(Mutex::new(Vec::with_capacity(80000)));
-    result.lock().unwrap().push(2); // Add 2 as below we start checking odd numbers from 3 onwards
+    result.lock().push(2); // Add 2 as below we start checking odd numbers from 3 onwards
     let num_vector: Vec<u32> = (3..n).step_by(2).collect();
     // iterate through vector of candidates in parallel using rayon
     num_vector.into_par_iter().for_each(|i| {
         if is_prime(i) {
-            result.lock().unwrap().push(i); // to be able to write to it concurrently
+            result.lock().push(i); // to be able to write to it concurrently
         }
     });
     // Move vector out of the Arc-Mutex
-    let list = Arc::try_unwrap(result).unwrap().into_inner().unwrap();
+    let list = Arc::try_unwrap(result).unwrap().into_inner();
     list
 }
 

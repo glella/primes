@@ -1,6 +1,8 @@
 // RUSTFLAGS="-C target-cpu=native" cargo build --release
 // Using mutex and atomic reference counting
-use std::sync::{Arc, Mutex};
+//use std::sync::{Arc, Mutex}; ==> Faster using parking_lot::Mutex
+use parking_lot::Mutex;
+use std::sync::Arc;
 use std::thread;
 
 use std::io;
@@ -87,14 +89,14 @@ fn prep_search(n: u32, num_threads: u32) -> Vec<Vec<u32>> {
 
 fn search(vectors: Vec<Vec<u32>>) -> Vec<u32> {
     let result: Arc<Mutex<Vec<u32>>> = Arc::new(Mutex::new(Vec::with_capacity(80000))); // to be able to write to it concurrently
-    result.lock().unwrap().push(2); // add 2 as we start checking from 3 onwards
+    result.lock().push(2); // add 2 as we start checking from 3 onwards
     let mut handles = vec![]; // to store handles to each thread
     for segment in vectors {
         let result = Arc::clone(&result);
         let handle = thread::spawn(move || {
             for i in segment {
                 if is_prime(i) {
-                    result.lock().unwrap().push(i);
+                    result.lock().push(i);
                 }
             }
         });
@@ -104,7 +106,7 @@ fn search(vectors: Vec<Vec<u32>>) -> Vec<u32> {
         // need to wait until all threads finished
         handle.join().unwrap();
     }
-    let vec = result.lock().unwrap().to_vec(); // return a plain vector
+    let vec = result.lock().to_vec();
     vec
 }
 

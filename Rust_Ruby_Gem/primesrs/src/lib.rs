@@ -1,10 +1,8 @@
-extern crate libc;
-extern crate rayon;
-
 use libc::{c_void, size_t};
+use parking_lot::Mutex;
 use rayon::prelude::*;
 use std::mem;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 
 // to be able to return struct compatible with a Ruby array
 #[repr(C)]
@@ -41,16 +39,16 @@ fn is_prime(n: u32) -> bool {
 pub extern "C" fn search(n: u32) -> RubyArray {
     // Surround Vector in Arc-Mutex to be able to write to it concurrently / 78498 primes in 1M
     let result: Arc<Mutex<Vec<u32>>> = Arc::new(Mutex::new(Vec::with_capacity(80000)));
-    result.lock().unwrap().push(2); // Add 2 as below we start checking odd numbers from 3 onwards
+    result.lock().push(2); // Add 2 as below we start checking odd numbers from 3 onwards
     let num_vector: Vec<u32> = (3..n).step_by(2).collect();
     // iterate through vector of candidates in parallel using rayon (into_par_iter is the key)
     num_vector.into_par_iter().for_each(|i| {
         if is_prime(i) {
-            result.lock().unwrap().push(i); // to be able to write to it concurrently
+            result.lock().push(i); // to be able to write to it concurrently
         }
     });
     // Move vector out of the Arc-Mutex
-    let mut list = Arc::try_unwrap(result).unwrap().into_inner().unwrap();
+    let mut list = Arc::try_unwrap(result).unwrap().into_inner();
     // make vector capacity equal length / optional
     list.shrink_to_fit();
     // return a struct from which Ruby can construct an array

@@ -17,7 +17,7 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | ---------------- | ----------- | --------------------- | ------------------------------------------------------------- |
 | Python 3.9.2     |    2.329    | normal - sequential   | python primes.py                                              |
 | Python 3.9.2 jit |    0.169    | using numba jit       | python primes_numba.py                                        |
-| Python + Rust    |    0.042    | Rust Module & threads | python primes_rust_module.py                                  |
+| Python + Rust    |    0.033    | Rust Module & threads | python primes_rust_module.py                                  |
 | NASM 2.15.05     |    0.126    | sequential            | run: ./primes 1000000                                         |
 | C clang 12.0.0   |    0.125    | sequential            | clang -O2 primes.c -o primes                                  |
 | C++ clang 12.0.0 |    0.121    | sequential            | clang++ -O2 primes.cpp -o primes                              |
@@ -27,15 +27,15 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Ruby 3.0 jit     |    6.083    | jit                   | ruby --jit-wait primes.rb                                     |
 | Ruby 3.0 Eratos  |    0.445    | Eratosthenes          | ruby primes_erastosthenes.rb                                  |
 | Ruby 3.0 Ractors |   12.441    | Experimental Ractors  | Does not work well. Ractors feature needs to mature           |
-| Ruby + Rust      |    0.042    | using Rust & threads  | ruby primes.rb                                                |
+| Ruby + Rust      |    0.033    | using Rust & threads  | ruby primes.rb                                                |
 | Crystal 0.36.1   |    0.200    | sequential            | crystal build --release -Dpreview_mt -o primes primes.cr      |
 | Crystal Channels |    0.055    | channels              | set CRYSTAL_WORKERS 16 or CRYSTAL_WORKERS=16                  |
 |                  |             |                       | crystal build --release -Dpreview_mt -o primes primes_chan.cr |
 | Crystal Eratos   |    0.050    | Eratosthenes          | crystal build --release -o primes primes_eratos.cr            |
 | Rust 1.51.0      |    0.131    | sequential            | cargo build --release                                         |
-| Rust Rayon       |    0.041    | rayon concurrency     | cargo build --release                                         |
+| Rust Rayon       |    0.030    | rayon concurrency     | cargo build --release  (faster with parking_lot::Mutex)       |
 | Rust Channels    |    0.029    | channels concurrency  | cargo build --release                                         |
-| Rust Arc/Mutex   |    0.039    | threads concurency    | cargo build --release                                         |
+| Rust Arc/Mutex   |    0.030    | threads concurency    | cargo build --release  (faster with parking_lot::Mutex)       |
 | Rust Eratos      |    0.006    | Eratosthenes          | cargo build --release                                         |
 | Go 1.16.2        |    0.306    | normal - sequential   | go build primes.go                                            |
 | Go goroutines    |    0.071    | goroutines            | go build primes.go                                            |
@@ -65,7 +65,7 @@ Time in millisecs - Multithreaded:
 | Pos |   Language      |  Time  | Exec size |
 | --- | --------------- | ------ | --------- |
 |  1  | Rust            |  29 ms |  321 KB   |
-|  2  | Ruby & Python   |  42 ms |           |
+|  2  | Ruby & Python   |  33 ms |           |
 |  3  | Crystal         |  55 ms |  409 KB   |
 |  4  | Go              |  71 ms |  2.1 MB   |
 |  5  | Swift           |  92 ms |  272 KB   |
@@ -80,7 +80,7 @@ Time in millisecs - Multithreaded:
 - In Rust tried 3 approaches for concurrency:
 a) A Goroutines like message passing approach using channels. (“Do not communicate by sharing memory; instead, share memory by communicating.”) -> Seems the fastest.
 b) Using the Rayon Library which made it the easiest to deploy with almost no changes to code.
-c) Using Mutex & Arc. (Shared state concurrency - the opposite of Go's approach).
+c) Using Mutex & Arc. (Shared state concurrency - the opposite of Go's approach). Faster with parking_lot::Mutex than with std Lib Mutex
 
 - Go has its "green and low cost" Goroutines following the M:N model with M green threads per N operating system threads because it bundles a significant runtime in the binary to handle that. Very easy to deploy.
 
