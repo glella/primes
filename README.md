@@ -47,6 +47,7 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Julia 1.6.0      |    0.162    | sequential            | julia primes.jl                                               |
 | Zig 0.8.0        |    0.135    | sequential            | zig build-exe primes.zig -O ReleaseSafe                       |
 | V 0.2.2          |    0.131    | sequential            | v -autofree primes.v                                          |
+| Nim 1.4.4        |    0.307    | sequential            | nim c -d:release primes.nim                                   |
 
 
 Comments:
@@ -56,6 +57,7 @@ Comments:
 - Crystal performed admirably compared to Go, C languages and Swift while being almost as fun to work with as Ruby.
 - V was easy and fun to use. Needs to mature more and improve documentation / examples.
 - Did not enjoy Zig. Felt cumbersome and unnecessarily archaic (ie no strings) with no perceived benefits compared to others like Rust. Took an eternity to code something this simple. Did not help that documentation needs to mature more.
+- Nim was nice to work with. Documentation and info is good.
 - Very easy to make Python Module and Ruby Gem in Rust landing these interpreted languages among the top performers. -> Short tutorial included in each folder.
 - Surprising size of GO's executable (2.1 MB), and Kotlin's bytecode (1.5 MB) given the significant runtimes.
 
@@ -74,6 +76,7 @@ Time in millisecs - Multithreaded:
 |     |    Kotlin bytec |        |  1.5 MB   |
 |     |    V            |        |  309 KB   |
 |     |    Zig          |        |  225 KB   |
+|     |    Nim          |        |  115 KB   |
 
 
 - In Rust tried 3 approaches for concurrency:
