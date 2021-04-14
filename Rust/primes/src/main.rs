@@ -55,7 +55,7 @@ fn main() {
             }
         }
         let elapsed = now.elapsed(); // check time elapsed
-        let sec = (elapsed.as_secs() as f64) + (elapsed.subsec_nanos() as f64 / 1000_000_000.0);
+        let sec = (elapsed.as_secs() as f64) + (elapsed.subsec_nanos() as f64 / 1_000_000_000.0);
         println!("Seconds: {:.3}", sec);
         println!("Number of primes: {}", result.len());
 
