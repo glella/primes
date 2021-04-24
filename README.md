@@ -56,8 +56,8 @@ Comments:
 - Rust is the fastest when comparing concurrent versions. 
 - Crystal performed admirably compared to Go, C languages and Swift while being almost as fun to work with as Ruby.
 - V was easy and fun to use. Needs to mature more and improve documentation / examples.
-- Did not enjoy Zig. Felt cumbersome and unnecessarily archaic (ie no strings) with no perceived benefits compared to others like Rust. Took an eternity to code something this simple. Did not help that documentation needs to mature more.
-- Nim was nice to work with. Documentation and info is good.
+- Did not enjoy Zig too much. Felt unnecessarily archaic (ie no strings) but seamless and safe C interoperability is intriguing.
+- Nim was nice to work with. Documentation and info is very good.
 - Very easy to make Python Module and Ruby Gem in Rust landing these interpreted languages among the top performers. -> Short tutorial included in each folder.
 - Surprising size of GO's executable (2.1 MB), and Kotlin's bytecode (1.5 MB) given the significant runtimes.
 
