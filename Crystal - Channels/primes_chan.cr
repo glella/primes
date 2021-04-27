@@ -89,14 +89,13 @@ def search(ranges)
   # this is done 1 array at a time - much less messages through the channels
   # start threads
   ranges.each { |segment| # for each subarray create a new fiber
-    spawn do
-        temp = [] of Int32
-        segment.each { |i|
-          temp << i if is_prime?(i)
-        }
-        ch.send(temp)
-    end 
-  }
+ spawn do
+    temp = [] of Int32
+    segment.each { |i|
+      temp << i if is_prime?(i)
+    }
+    ch.send(temp)
+  end }
 
   # receive
   ranges.each { |segment|
