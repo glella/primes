@@ -110,13 +110,17 @@ When working on a new problem most of the time I find myself creating a prototyp
 Prime benchmarking done for the 6502 8-bit family of processors.
 
 It all started when doing Ben Eater's 6502 computer project (check it out).
+
 After finishing I decided to run the benchmark on it but then though of running them on real old time HW.
 Got an Apple2e enhanced back to working condition, also an Atari 800XL and will get when available a modern Commander X16 - for now using an emulator.
 
 BASIC - Did not bother to use basic as it is very slow.
+
 ASM - It was difficult to use the exact same algorithm used above in 8 bit assembly as these processors can only add and substract. 
+
  - Had to create routines that use bitshifting and addition and substraction to do division and finding square root.
  - Had to create routines to print decimal numbers converting them from hex.
+
 C - Used CC65 afterwards and created the same solution for all the platforms - much easier and faster. 
  - Had to reuse part of the ASM code to calculate  square roots. It creates also the exact same division algorithm in assembly.
 
