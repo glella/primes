@@ -148,7 +148,7 @@ Not super easy to print in assembly for the Atari using a similar approach as wi
 Bottom line:
 - After doing this appreciate more the speed, power and capabilities of modern processors that even in assembly are much easier to work with.
 - Also how awesome and efficient compiled languages are, and how they abstract you from needing to understand every single bit of the platform you are coding for.
-- And how much more limited, but simpler these platforms were. How awesome it was that 1 single person could know absoluteky everything of his particular machine. 
+- And how much more limited, but simpler these platforms were. How awesome it was that 1 single person could know everything of his particular machine. 
 - On the other hand porting Assembly was a lot of work despite using same processor due to differences in the kernel.
 
 
