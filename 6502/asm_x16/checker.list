@@ -1,0 +1,666 @@
+ca65 V2.19 - Git 4de40a20c
+Main file   : checkprimes.s
+Current file: checkprimes.s
+
+000000r 1               ; primes.s
+000000r 1               ; compiles with: cl65 -t cx16 -o CHECKER.PRG -l checker.list checkprimes.s
+000000r 1               ; executes with: x16emu -debug
+000000r 1               ; Test: get input from console, looping test and print numbers in decimal format
+000000r 1               
+000000r 1               .org $080D
+00080D  1               .segment "STARTUP"
+00080D  1               .segment "INIT"
+00080D  1               .segment "ONCE"
+00080D  1               .segment "CODE"
+00080D  1               
+00080D  1  4C C6 08         jmp start
+000810  1               
+000810  1               ; Zero Page
+000810  1               USR_PTR         = $30
+000810  1               STR_PTR         = $60
+000810  1               
+000810  1               ; Kernal
+000810  1               CHRIN           = $FFCF
+000810  1               CHROUT          = $FFD2
+000810  1               
+000810  1               ; PETSCII
+000810  1               RETURN          = $0D
+000810  1               CHAR_0          = $30
+000810  1               CHAR_9          = $39
+000810  1               NEWLINE         = $0D
+000810  1               SPACE           = $20
+000810  1               
+000810  1               ; Zero Page "registers" 16 bit
+000810  1               ; U0 = USR_PTR
+000810  1               ; U1 = U0+2
+000810  1               ; U2 = U1+2
+000810  1               ; U3 = U2+2
+000810  1               ; U4 = U3+2
+000810  1               ; U5 = U4+2
+000810  1               ; U6 = U5+2
+000810  1               ; U7 = U6+2
+000810  1               ; U8 = U7+2
+000810  1               ; U9 = U8+2
+000810  1               ; U10 = U9+2
+000810  1               ; U11 = U10+2
+000810  1               ; U12 = U11+2
+000810  1               ; U13 = U12+2
+000810  1               ; U14 = U13+2
+000810  1               ; U15 = U14+2
+000810  1               
+000810  1               ; Zero Page "registers" 8 bit
+000810  1               ; b1 = U15+2
+000810  1               ; b2 = b1+1
+000810  1               ; b3 = b2+1
+000810  1               ; b4 = b3+1
+000810  1               ; b5 = b4+1
+000810  1               ; b6 = b5+1
+000810  1               
+000810  1               ; meaningful variable names
+000810  1               ; number = U0         ; division variables
+000810  1               ; divisor = U1
+000810  1               ; remain = U2
+000810  1               ; divresult = U3
+000810  1               
+000810  1               ; num = U4            ; root variables
+000810  1               ; rem = U5
+000810  1               ; temp = U6
+000810  1               ; root = b1
+000810  1               
+000810  1               ; isPrime = b2        ; main variables
+000810  1               ; count = U7
+000810  1               ; limit = U8
+000810  1               ; ivar = U9
+000810  1               ; nvar = divisor      ; reuse same register as it does not change during division & avoids assignments
+000810  1               ; printnum = U10
+000810  1               ; U11 is used by PrDecimal subroutine
+000810  1               
+000810  1               ;Macros 6502 & 65C02S
+000810  1               ;    .macro PushAll
+000810  1               ;      pha
+000810  1               ;      txa
+000810  1               ;      pha
+000810  1               ;      tya
+000810  1               ;      pha
+000810  1               ;   .endmacro
+000810  1               
+000810  1               ;   .macro PullAll
+000810  1               ;       pla
+000810  1               ;       tay
+000810  1               ;       pla
+000810  1               ;       tax
+000810  1               ;       pla
+000810  1               ;   .endmacro
+000810  1               
+000810  1                   .macro PushAll
+000810  1                       pha
+000810  1                       phx
+000810  1                       phy
+000810  1                   .endmacro
+000810  1               
+000810  1                   .macro PullAll
+000810  1                       ply
+000810  1                       plx
+000810  1                       pla
+000810  1                   .endmacro
+000810  1               
+000810  1                   ; Loads a 16-bit Word (immediate) to A (lo-byte) and X (hi-byte)
+000810  1                   .macro	LoadWordAX value
+000810  1               	    lda #<value
+000810  1               	    ldx #>value
+000810  1                   .endmacro
+000810  1               
+000810  1                   ; Store the 16-bit Word in AX to address (lo,hi)
+000810  1                   .macro	StoreAX address
+000810  1               	    sta address
+000810  1               	    stx address+1
+000810  1                   .endmacro
+000810  1               
+000810  1                   ; Store a 16-bit Word (immediate) to address (lo,hi)
+000810  1                   .macro	StoreImm value, address
+000810  1               	    LoadWordAX value
+000810  1               	    StoreAX address
+000810  1                   .endmacro
+000810  1               
+000810  1                   ; Moves 1 byte from source to dest
+000810  1                   .macro MoveB source, dest
+000810  1               	    lda source
+000810  1               	    sta dest
+000810  1                   .endmacro
+000810  1               
+000810  1                   ; Moves the 16-bit Word from source (lo,hi) to dest (lo,hi)
+000810  1                   .macro MoveW source, dest
+000810  1               	    MoveB source+0, dest+0
+000810  1               	    MoveB source+1, dest+1
+000810  1                   .endmacro
+000810  1               
+000810  1                   .macro PRINT_STRING string
+000810  1                       pha
+000810  1                       lda #<string
+000810  1                       sta STR_PTR
+000810  1                       lda #>string
+000810  1                       sta STR_PTR+1
+000810  1                       jsr print_str
+000810  1                       pla
+000810  1                   .endmacro
+000810  1               
+000810  1               ; globals
+000810  1  xx xx xx xx  input_string:   .res 5
+000814  1  xx           
+000815  1  00 00        temp_word:      .word 0
+000817  1  00 00        input_binary:   .word 0
+000819  1               
+000819  1  00 00        number:     .word 0             ; div vars
+00081B  1  00 00        divisor:    .word 0
+00081D  1  00 00        remain:     .word 0
+00081F  1  00 00        divresult:  .word 0
+000821  1               
+000821  1  00 00        num:        .word 0             ; root variables
+000823  1  00 00        rem:        .word 0
+000825  1  00 00        temp:       .word 0
+000827  1  00           root:       .byte 0
+000828  1               
+000828  1  00           isPrime:    .byte 0             ; main vars
+000829  1  00 00        count:      .word 0
+00082B  1  00 00        limit:      .word 0
+00082D  1  00 00        ivar:       .word 0
+00082F  1               ;nvar:       .word 0             ; not needed just use divisor
+00082F  1               ;nvar = divisor                  ; reuse same register as it does not change during division & avoids assignments
+00082F  1  00 00        printnum:   .word 0
+000831  1  00 00        scratch:    .word 0
+000833  1               
+000833  1               
+000833  1               ; prompts
+000833  1  45 4E 54 45  prompt:             .asciiz "enter test number: "
+000837  1  52 20 54 45  
+00083B  1  53 54 20 4E  
+000847  1  4D 55 53 54  num_error_prompt:   .asciiz "must be a number:  "
+00084B  1  20 42 45 20  
+00084F  1  41 20 4E 55  
+00085B  1  49 53 20 49  prime_prompt:       .asciiz "is it a prime?     "
+00085F  1  54 20 41 20  
+000863  1  50 52 49 4D  
+00086F  1  52 4F 4F 54  root_prompt:        .asciiz "root + 1:          "
+000873  1  20 2B 20 31  
+000877  1  3A 20 20 20  
+000883  1  52 45 4D 41  remainder_prompt:   .asciiz "remainder:         "
+000887  1  49 4E 44 45  
+00088B  1  52 3A 20 20  
+000897  1  4E 55 4D 3A  repeat_num:         .asciiz "num:               "
+00089B  1  20 20 20 20  
+00089F  1  20 20 20 20  
+0008AB  1  4E 55 4D 42  repeat_number:      .asciiz "number:            "
+0008AF  1  45 52 3A 20  
+0008B3  1  20 20 20 20  
+0008BF  1  59 45 53 00  yes_string:         .asciiz "yes"
+0008C3  1  4E 4F 00     no_string:          .asciiz "no"
+0008C6  1               
+0008C6  1               
+0008C6  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0008C6  1               ;Main
+0008C6  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0008C6  1               start:
+0008C6  1  48 A9 33 85      PRINT_STRING prompt
+0008CA  1  60 A9 08 85  
+0008CE  1  61 20 CF 09  
+0008D3  1  20 E6 09         jsr get_number
+0008D6  1  AD 17 08 8D      MoveW input_binary, num
+0008DA  1  21 08 AD 18  
+0008DE  1  08 8D 22 08  
+0008E2  1  AD 17 08 8D      MoveW input_binary, number
+0008E6  1  19 08 AD 18  
+0008EA  1  08 8D 1A 08  
+0008EE  1                   ; lda input_binary
+0008EE  1                   ; sta num
+0008EE  1                   ; sta number
+0008EE  1                   ; lda input_binary+1
+0008EE  1                   ; sta num+1
+0008EE  1                   ; sta number+1
+0008EE  1  20 29 09         jsr checkPrime
+0008F1  1  48 A9 5B 85      PRINT_STRING prime_prompt
+0008F5  1  60 A9 08 85  
+0008F9  1  61 20 CF 09  
+0008FE  1  AD 1D 08         lda remain
+000901  1                   ;cmp #$00
+000901  1  F0 13            beq @notaprime
+000903  1  48 A9 BF 85      PRINT_STRING yes_string
+000907  1  60 A9 08 85  
+00090B  1  61 20 CF 09  
+000910  1  A9 0D            lda #NEWLINE
+000912  1  20 D2 FF         jsr CHROUT
+000915  1  60               rts
+000916  1               @notaprime:
+000916  1  48 A9 C3 85      PRINT_STRING no_string
+00091A  1  60 A9 08 85  
+00091E  1  61 20 CF 09  
+000923  1  A9 0D            lda #NEWLINE
+000925  1  20 D2 FF         jsr CHROUT
+000928  1  60               rts
+000929  1               
+000929  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000929  1               ;Check if a given number is prime
+000929  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000929  1               ; trial division
+000929  1               checkPrime:
+000929  1  A9 01        	lda #1                  ; set divisor to 1
+00092B  1  8D 1B 08         sta divisor
+00092E  1  20 EC 0A         jsr sqroot              ; calc sqroot of num
+000931  1  EE 27 08         inc root                ; add 1 to root for loop limit = int(sqrt(i))+1
+000934  1               @loopcheck:
+000934  1  EE 1B 08         inc divisor
+000937  1  AD 17 08 8D      MoveW input_binary, number  ; reset number to be divided
+00093B  1  19 08 AD 18  
+00093F  1  08 8D 1A 08  
+000943  1  20 B3 0A         jsr divide              ; trial division
+000946  1  AD 1D 08         lda remain              ; if remainder is zero it is not a prime
+000949  1  F0 08        	beq @exit	            ; branch if equal (zero flag 1 after compare)
+00094B  1               
+00094B  1  AE 1B 08         ldx divisor             ; are we done yet?
+00094E  1  EC 27 08         cpx root
+000951  1  D0 E1            bne @loopcheck
+000953  1               @exit:
+000953  1  60           	rts
+000954  1               
+000954  1               print_prime:
+000954  1  AD 2D 08 8D      MoveW ivar, printnum    ; copy ivar to U10 "printnum" to convert and print
+000958  1  2F 08 AD 2E  
+00095C  1  08 8D 30 08  
+000960  1  A0 00            ldy #0                  ; Pad char '0' #48 or ' ' #32 or #0 for none
+000962  1  20 70 09         jsr PrDec16
+000965  1  A9 2C            lda #','
+000967  1  20 D2 FF         jsr CHROUT
+00096A  1  A9 20            lda #SPACE
+00096C  1  20 D2 FF         jsr CHROUT
+00096F  1  60               rts
+000970  1               
+000970  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000970  1               ;Print 16-bit decimal number
+000970  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000970  1               ; INPUT:    printnum = value to print, copied to scratch
+000970  1               ;           .Y  = pad character
+000970  1               ;           (e.g. '0' #48 or ' ' #32 or #0 for none)
+000970  1               ;
+000970  1               ; INPUT:    at PrDec16Lp1
+000970  1               ;           Y=(number of digits)*2-2, e.g. 8 for 5 digits
+000970  1               ;
+000970  1               ; OUTPUT:   A,X,Y corrupted
+000970  1               PrDec16:
+000970  1  8C CE 09     	sty pad                 ; Save new padding character
+000973  1  AD 2F 08 8D  	MoveW printnum, scratch
+000977  1  31 08 AD 30  
+00097B  1  08 8D 32 08  
+00097F  1  A0 08        	ldy #8                  ; Offset to powers of ten
+000981  1               PrDec16Lp1:
+000981  1  A2 FF        	ldx #$FF                ; Start with digit=-1
+000983  1  38           	sec
+000984  1               PrDec16Lp2:
+000984  1  AD 31 08     	lda scratch                 ; Subtract current tens
+000987  1  F9 C4 09     	sbc PrDec16Tens+0,Y
+00098A  1  8D 31 08         sta scratch
+00098D  1  AD 32 08         lda scratch+1
+000990  1  F9 C5 09         sbc PrDec16Tens+1,Y
+000993  1  8D 32 08         sta scratch+1
+000996  1  E8               inx                     ; Loop until <0
+000997  1  B0 EB            bcs PrDec16Lp2
+000999  1  AD 31 08         lda scratch                 ; Add current tens back in
+00099C  1  79 C4 09         adc PrDec16Tens+0,Y
+00099F  1  8D 31 08         sta scratch
+0009A2  1  AD 32 08         lda scratch+1
+0009A5  1  79 C5 09         adc PrDec16Tens+1,Y
+0009A8  1  8D 32 08         sta scratch+1
+0009AB  1  8A               txa                     ; Not zero, print it
+0009AC  1  D0 07            bne PrDec16Digit
+0009AE  1  AD CE 09         lda pad                 ; pad<>0, use it
+0009B1  1  D0 09            bne PrDec16Print
+0009B3  1  F0 0A            beq PrDec16Next
+0009B5  1               PrDec16Digit:
+0009B5  1  A2 30            ldx #48                 ; ASC"0", No more zero padding
+0009B7  1  8E CE 09         stx pad
+0009BA  1  09 30            ora #48                 ; ASC"0", Print this digit
+0009BC  1               PrDec16Print:
+0009BC  1  20 D2 FF         jsr CHROUT
+0009BF  1               PrDec16Next:
+0009BF  1  88               dey                     ; Loop for next digit
+0009C0  1  88               dey
+0009C1  1  10 BE            bpl PrDec16Lp1
+0009C3  1  60               rts
+0009C4  1               PrDec16Tens:
+0009C4  1  01 00            .word 1
+0009C6  1  0A 00            .word 10
+0009C8  1  64 00            .word 100
+0009CA  1  E8 03            .word 1000
+0009CC  1  10 27            .word 10000
+0009CE  1  xx           pad:.res 1			; default 0 = no padding
+0009CF  1               
+0009CF  1               print_str: ; STR_PTR = address of null-terminated string
+0009CF  1  5A               phy
+0009D0  1  A0 00            ldy #0
+0009D2  1               @loop:
+0009D2  1  B1 60            lda (STR_PTR),y
+0009D4  1  F0 06            beq @done
+0009D6  1  20 D2 FF         jsr CHROUT
+0009D9  1  C8               iny
+0009DA  1  80 F6            bra @loop
+0009DC  1               @done:
+0009DC  1  7A               ply
+0009DD  1  60               rts
+0009DE  1               
+0009DE  1               
+0009DE  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0009DE  1               ;Flush chrin
+0009DE  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0009DE  1               flush_chrin:
+0009DE  1  20 CF FF         jsr CHRIN
+0009E1  1  C9 0D            cmp #RETURN
+0009E3  1  D0 F9            bne flush_chrin
+0009E5  1  60               rts
+0009E6  1               
+0009E6  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0009E6  1               ;Get number input from console
+0009E6  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0009E6  1               get_number:
+0009E6  1  48               pha
+0009E7  1  DA               phx
+0009E8  1  5A               phy
+0009E9  1  A2 00            ldx #0
+0009EB  1               @input_loop:
+0009EB  1  20 CF FF         jsr CHRIN
+0009EE  1  C9 0D            cmp #RETURN
+0009F0  1  F0 0B            beq @input_done
+0009F2  1  9D 10 08         sta input_string,x
+0009F5  1  E8               inx
+0009F6  1  E0 05            cpx #5
+0009F8  1  D0 F1            bne @input_loop
+0009FA  1  20 DE 09         jsr flush_chrin
+0009FD  1               @input_done: ; A = RETURN
+0009FD  1  20 D2 FF         jsr CHROUT
+000A00  1  9E 10 08         stz input_string,x ; null termination
+000A03  1                   ; check for number
+000A03  1  A2 00            ldx #0
+000A05  1               @check_loop:
+000A05  1  BD 10 08         lda input_string,x
+000A08  1  C9 00            cmp #0
+000A0A  1  F0 0B            beq @check_empty
+000A0C  1  C9 30            cmp #CHAR_0
+000A0E  1  30 0B            bmi @error
+000A10  1  C9 3A            cmp #(CHAR_9 + 1)
+000A12  1  10 07            bpl @error
+000A14  1  E8               inx
+000A15  1  80 EE            bra @check_loop
+000A17  1               @check_empty:
+000A17  1  E0 00            cpx #0
+000A19  1  D0 10            bne @convert
+000A1B  1               @error:
+000A1B  1  48 A9 47 85      PRINT_STRING num_error_prompt
+000A1F  1  60 A9 08 85  
+000A23  1  61 20 CF 09  
+000A28  1  4C EB 09         jmp @input_loop
+000A2B  1               @convert:
+000A2B  1  A2 00            ldx #0
+000A2D  1  9C 17 08         stz input_binary
+000A30  1  9C 18 08         stz input_binary+1
+000A33  1               @conv_loop:
+000A33  1  BD 10 08         lda input_string,x
+000A36  1  F0 48            beq @done
+000A38  1                   ; new digit, multiply input_binary by 10
+000A38  1  0E 17 08         asl input_binary
+000A3B  1  2E 18 08         rol input_binary+1
+000A3E  1  AD 17 08         lda input_binary
+000A41  1                   ; multiplied by 2 - save value in temp variable
+000A41  1  8D 15 08         sta temp_word
+000A44  1  AD 18 08         lda input_binary+1
+000A47  1  8D 16 08         sta temp_word+1
+000A4A  1                   ; continue shifting two more bits to multiply by 8
+000A4A  1  0E 17 08         asl input_binary
+000A4D  1  2E 18 08         rol input_binary+1
+000A50  1  0E 17 08         asl input_binary
+000A53  1  2E 18 08         rol input_binary+1
+000A56  1                   ; now add x2 value to x8 value to get x10 value
+000A56  1  AD 17 08         lda input_binary
+000A59  1  18               clc
+000A5A  1  6D 15 08         adc temp_word
+000A5D  1  8D 17 08         sta input_binary
+000A60  1  AD 18 08         lda input_binary+1
+000A63  1  6D 16 08         adc temp_word+1
+000A66  1  8D 18 08         sta input_binary+1
+000A69  1                   ; now add digit from string
+000A69  1  BD 10 08         lda input_string,x
+000A6C  1  29 0F            and #$0F ; zero out upper nybble to get digit numerical value
+000A6E  1  18               clc
+000A6F  1  6D 17 08         adc input_binary
+000A72  1  8D 17 08         sta input_binary
+000A75  1  AD 18 08         lda input_binary+1
+000A78  1  69 00            adc #0 ; let carry happen, if necessary
+000A7A  1  8D 18 08         sta input_binary+1
+000A7D  1  E8               inx
+000A7E  1  80 B3            bra @conv_loop
+000A80  1               @done:
+000A80  1  7A               ply
+000A81  1  FA               plx
+000A82  1  68               pla
+000A83  1  60               rts
+000A84  1               
+000A84  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000A84  1               ;Print hex 8 bit numbers
+000A84  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000A84  1               ; printhex:           ; prints an 8 bit value in hex - easier to understand logic
+000A84  1               ;     pha             ; saves A for lowest significant digit
+000A84  1               ; print_hi:
+000A84  1               ;     lsr             ; shift right 4 bits
+000A84  1               ;     lsr
+000A84  1               ;     lsr
+000A84  1               ;     lsr
+000A84  1               ;     jsr hex
+000A84  1               ; print_lo:
+000A84  1               ;     pla             ; fetch for lowest significant digit
+000A84  1               ; hex:
+000A84  1               ;     and #$0f        ; keep only the lower 4 bits
+000A84  1               ;     ora #$30        ; i.e. "0" - convert to ASCII - suma $30 (si $3 -> $33)
+000A84  1               ;     cmp #$3a        ; digit? (ascii code above numbers - es $33 < $3A?)
+000A84  1               ;     bcc echo        ; yes - if it is a digit just print it
+000A84  1               ;     adc #6          ; add offset for A if it a letter A to F
+000A84  1               ; echo:
+000A84  1               ;     jsr CHROUT      ; print it
+000A84  1               ; rts
+000A84  1               
+000A84  1               ; lookup table to print hex digits
+000A84  1  30 31 32 33  hex_digits: .asciiz "0123456789abcdef"
+000A88  1  34 35 36 37  
+000A8C  1  38 39 41 42  
+000A95  1               
+000A95  1               printhex:           ; prints an 8 bit value in hex - faster with no branching using lookup table
+000A95  1  48 DA 5A         PushAll
+000A98  1  48               pha
+000A99  1  29 0F            and  #$0f
+000A9B  1  AA               tax
+000A9C  1  BC 84 0A         ldy  hex_digits,x
+000A9F  1  68               pla
+000AA0  1  4A               lsr  a
+000AA1  1  4A               lsr  a
+000AA2  1  4A               lsr  a
+000AA3  1  4A               lsr  a
+000AA4  1  AA               tax
+000AA5  1  BD 84 0A         lda  hex_digits,x
+000AA8  1  20 D2 FF         jsr CHROUT      ; print high nibble
+000AAB  1  98               tya
+000AAC  1  20 D2 FF         jsr CHROUT      ; print low nibble
+000AAF  1  7A FA 68         PullAll
+000AB2  1  60               rts
+000AB3  1               
+000AB3  1               
+000AB3  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000AB3  1               ;16-Bit Binary Division
+000AB3  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000AB3  1               ;number = U0
+000AB3  1               ;divisor = U1
+000AB3  1               ;remain = U2
+000AB3  1               ;divresult = U3
+000AB3  1               divide:
+000AB3  1  48 DA 5A         PushAll
+000AB6  1  A9 00        	lda #0	        ; preset remainder to 0
+000AB8  1  8D 1D 08     	sta remain
+000ABB  1  8D 1E 08     	sta remain+1
+000ABE  1  A2 10        	ldx #16	       	; repeat for each bit - 16 times
+000AC0  1               @divloop:
+000AC0  1  0E 19 08     	asl number		; dividend lb & hb*2, msb -> Carry
+000AC3  1  2E 1A 08     	rol number+1
+000AC6  1  2E 1D 08     	rol remain		; remainder lb & hb * 2 + msb from carry
+000AC9  1  2E 1E 08     	rol remain+1
+000ACC  1  AD 1D 08     	lda remain
+000ACF  1  38           	sec
+000AD0  1  ED 1B 08     	sbc divisor		; substract divisor to see if it fits in
+000AD3  1  A8           	tay	        	; lb divresult -> Y, for we may need it later
+000AD4  1  AD 1E 08     	lda remain+1
+000AD7  1  ED 1C 08     	sbc divisor+1
+000ADA  1  90 09        	bcc @skip		; if carry=0 then divisor didn't fit in yet
+000ADC  1  8D 1E 08     	sta remain+1	; else save substraction divresult as new remainder
+000ADF  1  8C 1D 08     	sty remain
+000AE2  1  EE 1F 08     	inc divresult		; and increment divresult cause divisor fit in 1 times
+000AE5  1               @skip:
+000AE5  1  CA           	dex
+000AE6  1  D0 D8        	bne @divloop
+000AE8  1  7A FA 68         PullAll
+000AEB  1  60           	rts
+000AEC  1               
+000AEC  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000AEC  1               ;Calculates 8-bit sqrt of 16-bit integer in num/num+1
+000AEC  1               ;result in root (0-255) and remainder in remain (0-511) in rem/rem+1
+000AEC  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000AEC  1               ; num = U4
+000AEC  1               ; rem = U5
+000AEC  1               ; temp = U6
+000AEC  1               ; root = b1
+000AEC  1               sqroot:
+000AEC  1  48 DA 5A     	PushAll
+000AEF  1  A9 00        	lda	#0  		; clear A
+000AF1  1  8D 23 08     	sta	rem		    ; clear remainder low byte
+000AF4  1  8D 24 08     	sta	rem+1    	; clear remainder high byte
+000AF7  1  8D 27 08     	sta	root		; clear Root
+000AFA  1  A2 08        	ldx	#8  		; 8 pairs of bits to do
+000AFC  1               @loop:
+000AFC  1  0E 27 08     	asl	root		; root = root * 2
+000AFF  1               
+000AFF  1  0E 21 08     	asl	num		    ; shift highest bit of number ..
+000B02  1  2E 22 08     	rol	num+1
+000B05  1  2E 23 08     	rol	rem		    ; .. into remainder
+000B08  1  2E 24 08     	rol	rem+1
+000B0B  1               
+000B0B  1  0E 21 08     	asl	num		    ; shift highest bit of number ..
+000B0E  1  2E 22 08     	rol	num+1
+000B11  1  2E 23 08     	rol	rem		    ; .. into remainder
+000B14  1  2E 24 08     	rol	rem+1
+000B17  1               
+000B17  1  AD 27 08     	lda	root		; copy root ..
+000B1A  1  8D 25 08     	sta	temp		; .. to temp
+000B1D  1  A9 00        	lda	#0  		; clear byte
+000B1F  1  8D 26 08     	sta	temp+1		; clear temp high byte
+000B22  1               
+000B22  1  38           	sec				; +1
+000B23  1  2E 25 08     	rol	temp		; temp = temp * 2 + 1
+000B26  1  2E 26 08     	rol	temp+1
+000B29  1               
+000B29  1  AD 24 08     	lda	rem+1    	; get remainder high byte
+000B2C  1  CD 26 08     	cmp	temp+1		; compare with partial high byte
+000B2F  1  90 1F        	bcc	@next		; skip sub if remainder high byte smaller
+000B31  1               
+000B31  1  D0 08        	bne	@subtr		; do sub if <> (must be remainder>partial !)
+000B33  1               
+000B33  1  AD 23 08     	lda	rem	    	; get remainder low byte
+000B36  1  CD 25 08     	cmp	temp		; comapre with partial low byte
+000B39  1  90 15        	bcc	@next		; skip sub if remainder low byte smaller
+000B3B  1               
+000B3B  1                                   ; else remainder>=partial so subtract then
+000B3B  1               				    ; and add 1 to root. carry is always set here
+000B3B  1               @subtr:
+000B3B  1  AD 23 08     	lda	rem		    ; get remainder low byte
+000B3E  1  ED 25 08     	sbc	temp		; subtract partial low byte
+000B41  1  8D 23 08     	sta	rem    	    ; save remainder low byte
+000B44  1  AD 24 08     	lda	rem+1    	; get remainder high byte
+000B47  1  ED 26 08     	sbc	temp+1		; subtract partial high byte
+000B4A  1  8D 24 08     	sta	rem+1    	; save remainder high byte
+000B4D  1  EE 27 08     	inc	root		; increment Root
+000B50  1               
+000B50  1               @next:
+000B50  1  CA           	dex				; decrement bit pair count
+000B51  1  D0 A9        	bne	@loop		; loop if not all done
+000B53  1  7A FA 68     	PullAll
+000B56  1  60           	rts
+000B57  1               
+000B57  1               
+000B57  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000B57  1               ;Print registers
+000B57  1               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000B57  1  20 41 20 20  header: .asciiz " a  x  y sp sr"
+000B5B  1  58 20 20 59  
+000B5F  1  20 53 50 20  
+000B66  1               
+000B66  1               print_header:
+000B66  1  A2 00            ldx #0
+000B68  1               @header_loop:
+000B68  1  BD 57 0B         lda header,x
+000B6B  1  F0 06            beq @header_done
+000B6D  1  20 D2 FF         jsr CHROUT
+000B70  1  E8               inx
+000B71  1  80 F5            bra @header_loop
+000B73  1               @header_done:
+000B73  1  A9 0D            lda #NEWLINE
+000B75  1  20 D2 FF         jsr CHROUT
+000B78  1  60               rts
+000B79  1               
+000B79  1               print_regs:
+000B79  1  08               php
+000B7A  1  48               pha
+000B7B  1  DA               phx
+000B7C  1  08               php ; push P again for quick retrieval
+000B7D  1  20 B1 0B         jsr print_hex
+000B80  1  A9 20            lda #SPACE
+000B82  1  20 D2 FF         jsr CHROUT
+000B85  1  8A               txa
+000B86  1  20 B1 0B         jsr print_hex
+000B89  1  A9 20            lda #SPACE
+000B8B  1  20 D2 FF         jsr CHROUT
+000B8E  1  98               tya
+000B8F  1  20 B1 0B         jsr print_hex
+000B92  1  A9 20            lda #SPACE
+000B94  1  20 D2 FF         jsr CHROUT
+000B97  1  BA               tsx
+000B98  1  8A               txa
+000B99  1  18               clc
+000B9A  1  69 06            adc #6 ; calculate SP from before JSR
+000B9C  1  20 B1 0B         jsr print_hex
+000B9F  1  A9 20            lda #SPACE
+000BA1  1  20 D2 FF         jsr CHROUT
+000BA4  1  68               pla ; pull earlier P into A
+000BA5  1  20 B1 0B         jsr print_hex
+000BA8  1  A9 0D            lda #NEWLINE
+000BAA  1  20 D2 FF         jsr CHROUT
+000BAD  1  FA               plx
+000BAE  1  68               pla
+000BAF  1  28               plp
+000BB0  1  60               rts
+000BB1  1               
+000BB1  1               ; like how these subroutines work without lookup tables and easy to understand (yet another version 3 in this file)
+000BB1  1               print_hex:
+000BB1  1  48               pha	   ; push original A to stack
+000BB2  1  4A               lsr
+000BB3  1  4A               lsr
+000BB4  1  4A               lsr
+000BB5  1  4A               lsr      ; A = A >> 4
+000BB6  1  20 C0 0B         jsr print_hex_digit
+000BB9  1  68               pla      ; pull original A back from stack
+000BBA  1  29 0F            and #$0F ; A = A & 0b00001111
+000BBC  1  20 C0 0B         jsr print_hex_digit
+000BBF  1  60               rts
+000BC0  1               
+000BC0  1               print_hex_digit:
+000BC0  1  C9 0A            cmp #$0A
+000BC2  1  10 04            bpl @letter
+000BC4  1  09 30            ora #$30    ; PETSCII numbers: 1=$31, 2=$32, etc.
+000BC6  1  80 03            bra @print
+000BC8  1               @letter:
+000BC8  1  18               clc
+000BC9  1  69 37            adc #$37		; PETSCII letters: A=$41, B=$42, etc.
+000BCB  1               @print:
+000BCB  1  20 D2 FF         jsr CHROUT
+000BCE  1  60               rts
+000BCE  1               

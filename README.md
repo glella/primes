@@ -3,8 +3,7 @@ Primes search using trial division - Multiple languages.
 
 Simple exercise to play with different languages while benchmarking their performance on different devices. 
 
-Have run them on my MacBook Pro, Mate9, KeyOne, Note8, Essential PH-1, iPhone X (Pythonista), Gemini, Note9, iPhone 12 (using compiled libraries / native code in iOS app).
-Termux on Android. On Note 9 also used Linux on Dex, and Debian Linux on Gemini.
+Have run them on my MacBook Pro, Mate9, KeyOne, Note8, Essential PH-1, iPhone X (Pythonista), Gemini, Note9, iPhone 12 (using compiled libraries / native code in iOS app), Fold4.
 
 -----------------------------------------------
 
@@ -105,3 +104,47 @@ I like Go's simplicity. Crystal is simpler and faster. Swift very nice to work w
 Language of choice: Rust -> gives you control and clarity of what you are doing, it has a very helpful compiler, awesome tools, great libraries, very straightforward memory model that helps you to avoid many errors, no significant runtime, good documentation and helpful community. When programs compile they run with no runtime surprises. It is fast and efficient and keeps on improving at a fast pace.
 
 When working on a new problem most of the time I find myself creating a prototype with Python or Ruby (now perhaps I will try using Crystal), but every time I end up writing it in Rust for optimal performance.
+
+-----------------------------------------------
+
+Prime benchmarking done for the 6502 8-bit family of processors.
+
+It all started when doing Ben Eater's 6502 computer project (check it out).
+After finishing I decided to run the benchmark on it but then though of running them on real old time HW.
+Got an Apple2e enhanced back to working condition, also an Atari 800XL and will get when available a modern Commander X16 - for now using an emulator.
+
+BASIC - Did not bother to use basic as it is very slow.
+ASM - It was difficult to use the exact same algorithm used above in 8 bit assembly as these processors can only add and substract. 
+ - Had to create routines that use bitshifting and addition and substraction to do division and finding square root.
+ - Had to create routines to print decimal numbers converting them from hex.
+C - Used CC65 afterwards and created the same solution for all the platforms - much easier and faster. 
+ - Had to reuse part of the ASM code to calculate  square roots. It creates also the exact same division algorithm in assembly.
+
+Reduced the bechmark to seek until number 50,000 so it does not overflow beyond 16-bits and also due to time (does not make any sense to measure hours).
+
+Seek until 50,000. 5133 primes.
+Time in minutes and seconds:
+
+| Computer            |   Processor      |  Executable created with  |  Time Emulator  |  Time real HW   |
+| ------------------- | ---------------- | ------------------------- | --------------- | --------------- |
+|  Apple 2e enhanced  | 65C02 - 1 Mhz    |  CC65 - C + ASM           |      6:20       |  	  6:15       |
+|  Apple 2e enhanced  | 65C02 - 1 Mhz    |  ASM                      |      9:42       |  	  8:40       |
+|  cx16				  | 65C02 - 8 Mhz    |  CC65 - C + ASM           |      0:48       |  	   -         |
+|  cx16				  | 65C02 - 8 Mhz    |  ASM                      |      1:07       |  	   -         |
+|  Atari 800XL        | 6502  - 1.8 Mhz  |  CC65 - C + ASM           |      5:27       |  	  5:51       |
+|  Atari 800XL        | 6502  - 1.8 Mhz  |  ASM                      |    too lazy     |    too lazy     |
+
+
+
+C does more efficient looping that what I manually created for looping using 16bit numbers - other than does uses exact same division and sqroot assembly. Could investigate more. Just spent too much time on this already.
+
+Not super easy to print in assembly for the Atari using a similar approach as with the Apple, or cx16. Would need to recreate a completely different routine for the Atari and I am too lazy - check the hello world assembly example. You are welcome to add.
+
+Bottom line:
+- After doing this appreciate more the speed, power and capabilities of modern processors that even in assembly are much easier to work with.
+- Also how awesome and efficient compiled languages are, and how they abstract you from needing to understand every single bit of the platform you are coding for
+- And how much more limited, but simpler these platforms were, and how awesome it was that 1 single person could know absoluteky everything of his particular machine, kernel, nuances, etc. (but porting is a time consuming thing on assembly)
+
+
+
+
