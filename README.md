@@ -143,7 +143,7 @@ Time in minutes and seconds:
 
 C does more efficient looping that what I manually created for looping using 16bit numbers - other than that, it uses exact same division and sqroot assembly. Could investigate more. Just spent too much time on this already.
 
-Not super easy to print in assembly for the Atari using a similar approach as with the Apple, or cx16. Would need to recreate a completely different routine for the Atari and I am too lazy - check the hello world assembly example. You are welcome to add.
+Not super easy to print in assembly for the Atari using a similar approach as with the Apple, or cx16. Would need to recreate a completely different routine for the Atari and I am too lazy. You are welcome to add.
 
 Bottom line:
 - After doing this appreciate more the speed, power and capabilities of modern processors that even in assembly are much easier to work with.
