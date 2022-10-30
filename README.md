@@ -127,6 +127,7 @@ C - Used CC65 afterwards and created the same solution for all the platforms - m
 Reduced the bechmark to seek until number 50,000 so it does not overflow beyond 16-bits and also due to time (does not make any sense to measure hours).
 
 Seek until 50,000. 5133 primes.
+
 Time in minutes and seconds:
 
 | Computer            |   Processor      |  Executable created with  |  Time Emulator  |  Time real HW   |
