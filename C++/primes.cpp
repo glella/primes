@@ -1,6 +1,6 @@
 // 2 options to compile in terminal with not a sifnificant performance difference:
-// clang++ -O2 primes.cpp -o primes
-// clang++ -std=c++17 -stdlib=libc++ -g primes.cpp -o primes
+// clang++ -O2 primes.cpp -o primescpp
+// clang++ -std=c++17 -stdlib=libc++ -g primes.cpp -o primescpp
 // compiled on xcode 3 times faster despite using same flags
 
 #include <iostream>
