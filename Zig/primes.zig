@@ -1,7 +1,11 @@
-//zig build-exe primes.zig -O ReleaseSafe
+// to run prgm: zig build run
+// to run the tests: zig build test
+// zig build-exe primes.zig -O ReleaseFast or ReleaseSafe
+
 const std = @import("std");
 const stdin = std.io.getStdIn().reader();
 const stdout = std.io.getStdOut().writer();
+// const expect = std.testing.expect;
 
 fn isPrime(n: u32) bool {
     switch (n) {
@@ -48,15 +52,15 @@ fn userAffirmative(message: []const u8) !bool {
 pub fn main() !void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();
-    const allocator = &arena.allocator;
+    const allocator = arena.allocator();
     try stdout.print("\nLooks for prime numbers from 1 to your input using trial division\n", .{});
 
     while (true) {
         const num: u32 = try userInput("Seek until what integer number?: ");
-        var result = try std.ArrayList(u32).initCapacity(allocator, 80000); // 78498 primes in 1M
+        var result = try std.ArrayList(u32).initCapacity(allocator, 664579); // 664,579 primes in 10M
 
         // start the clock
-        const timer: std.time.Timer = try std.time.Timer.start();
+        var timer: std.time.Timer = try std.time.Timer.start();
         
         try result.append(2); // add 2 manually as we start checking at 3
         var i: u32 = 3;
@@ -83,3 +87,4 @@ pub fn main() !void {
         }
     }
 }
+
