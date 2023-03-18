@@ -84,31 +84,31 @@ pub fn main() !void {
         
         try result.append(2); // add 2 manually as we start checking at 3
 
-        // for (locks, threads) |mut lock, mut thread| {
-        //     lock = try std.Thread.Mutex.init;
-        //     thread = try std.Thread.spawn(.{}, {
-        //         lock.lock();
-        //         for (arr) |i| {
-        //             if (isPrime(i)) {
-        //                 try result.append(i);
-        //             } 
-        //         }
-        //         lock.unlock();
-        //     });
+        // // for (locks, threads) |mut lock, mut thread| {
+        // //     lock = try std.Thread.Mutex.init;
+        // //     thread = try std.Thread.spawn(.{}, {
+        // //         lock.lock();
+        // //         for (arr) |i| {
+        // //             if (isPrime(i)) {
+        // //                 try result.append(i);
+        // //             } 
+        // //         }
+        // //         lock.unlock();
+        // //     });
             
-        // }
+        // // }
 
-        // for (threads) |mut thread| {
-        //     thread.join(). catch |err| {
-        //         std.log.err("{s}\n", .{err});
-        //     }
-        // }
+        // // for (threads) |mut thread| {
+        // //     thread.join(). catch |err| {
+        // //         std.log.err("{s}\n", .{err});
+        // //     }
+        // // }
 
-        for (arr) |i| {
-           if (isPrime(i)) {
-                try result.append(i);
-            } 
-        }
+        // for (arr) |i| {
+        //    if (isPrime(i)) {
+        //         try result.append(i);
+        //     } 
+        // }
 
         // stop the clock
         const elapsed: f64 = @intToFloat(f64, timer.read()) / 1_000_000_000.0;
@@ -137,4 +137,17 @@ test " for capture" {
     for (a, b) |x, y| {
     std.debug.print("x = {}, y = {}\n", .{ x, y });
     }
+}
+
+fn thunk(num_threads: usize, thread_id: usize) void {
+    std.debug.print("{}/{}\n", .{ thread_id, num_threads, });
+}
+
+test "threads test" {
+    var child_threads: [7]std.Thread = undefined;
+
+    for (child_threads, 0..) |thread, i| thread = try std.Thread.spawn(.{}, thunk, .{ 8, i + 1, });
+    thunk(8, 0);
+
+    for (child_threads) |thread| thread.join();
 }

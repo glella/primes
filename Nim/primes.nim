@@ -42,6 +42,3 @@ while true:
     write(stdout, "Another run? (y/n) ")
     input = stdin.readline()
     if input != "y": break
-
-
-     
