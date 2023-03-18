@@ -1,4 +1,3 @@
-#! /usr/bin/env ruby
 # bash:
 # CRYSTAL_WORKERS=16; crystal build --release -Dpreview_mt -o primes primes_chan.cr
 # fish:
