@@ -27,7 +27,7 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 | Ruby 3.0 Eratos  |    0.445    | Eratosthenes          | ruby primes_erastosthenes.rb                                  |
 | Ruby 3.0 Ractors |   12.441    | Experimental Ractors  | Does not work well. Ractors feature needs to mature           |
 | Ruby + Rust      |    0.033    | using Rust & threads  | ruby primes.rb                                                |
-| Crystal 1.7.2    |    0.191    | sequential            | crystal build --release -Dpreview_mt -o primes primes.cr      |
+| Crystal 1.7.3    |    0.241    | sequential            | crystal build --release -Dpreview_mt -o primes primes.cr      |
 | Crystal Channels |    0.055    | channels              | set CRYSTAL_WORKERS 16 or CRYSTAL_WORKERS=16                  |
 |                  |             |                       | crystal build --release -Dpreview_mt -o primes primes_chan.cr |
 | Crystal Eratos   |    0.050    | Eratosthenes          | crystal build --release -o primes primes_eratos.cr            |
@@ -65,8 +65,8 @@ Time in millisecs - Multithreaded:
 | Pos |   Language      |  Time  | Exec size |
 | --- | --------------- | ------ | --------- |
 |  1  | Rust            |  29 ms |  321 KB   |
-|  2  | Ruby & Python   |  33 ms |           |
-|  3  | Crystal         |  55 ms |  409 KB   |
+|  2  | Ruby & Rust     |  33 ms |           |
+|  3  | Crystal         |  58 ms |  436 KB   |
 |  4  | Go              |  71 ms |  2.1 MB   |
 |  5  | Swift           |  92 ms |  272 KB   |
 |  6  | Nim             |  52 ms |  142 KB   |
