@@ -72,7 +72,6 @@ where
         .map_err(|e| Error::new(ErrorKind::InvalidInput, e))
 }
 
-
 // Rust provides asynchronous channels for communication between threads.
 fn search(vectors: Vec<Vec<u32>>) -> Vec<u32> {
     let mut result: Vec<u32> = Vec::with_capacity(664579); // number of primes in 10M
@@ -151,6 +150,10 @@ fn main() {
             // match get_int(&input) {
             match get_value(&input) {
                 Ok(i) => {
+                    if i < 1 {
+                        println!("Minimum number of threads is 1");
+                        continue;
+                    }
                     threads = i;
                     break;
                 },
@@ -165,11 +168,7 @@ fn main() {
         let odds: Vec<u32> = (3..num)
                                     .filter(|n| n % 2 != 0)
                                     .collect();
-        let chunk_size: usize = if threads > 0 {
-            (odds.len() + threads - 1) / threads
-        } else {
-            1
-        };
+        let chunk_size: usize = (odds.len() + threads - 1) / threads;
         let vectors: Vec<Vec<u32>> = odds.chunks(chunk_size)
                                         .map(|chunk| chunk.to_vec())
                                         .collect();
