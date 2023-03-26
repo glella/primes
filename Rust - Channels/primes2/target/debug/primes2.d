@@ -1,1 +1,1 @@
-/Users/guillermolella/OneDrive/Programming/Git/primes/Rust\ -\ Channels/primes2/target/debug/primes2: /Users/guillermolella/OneDrive/Programming/Git/primes/Rust\ -\ Channels/primes2/src/main.rs
+/Users/guillermolella/OneDrive/Programming/Git/primes/Rust\ -\ Channels/primes2/target/debug/primes2: /Users/guillermolella/OneDrive/Programming/Git/primes/Rust\ -\ Channels/primes2/src/common.rs /Users/guillermolella/OneDrive/Programming/Git/primes/Rust\ -\ Channels/primes2/src/main.rs
