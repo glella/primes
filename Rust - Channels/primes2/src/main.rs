@@ -73,48 +73,28 @@ fn search(vectors: Vec<Vec<u32>>) -> Vec<u32> {
 
 fn main() {
     println!("Looks for prime numbers from 1 to your input");
-        
+
     loop {
+        // get valid limit number input
         let mut input: String;
-        // get valid number input
-        let num: u32;
-        loop {
+        let num: u32 = loop {
             input = prompt("Seek until what integer number?: ");
             match get_value(&input) {
-                Ok(i) => {
-                    if i < 5 {
-                        println!("Minimum number needs to be 5 or above");
-                        continue;
-                    }
-                    num = i;
-                    break;
-                }
-                Err(e) => {
-                    eprintln!("Error: {}", e);
-                    continue;
-                }
+                Ok(i) if i >= 5 => break i,
+                Ok(_) => println!("Minimum number needs to be 5 or above"),
+                Err(e) => eprintln!("Error: {}", e),
             }
-        }
+        };
 
-        // get valid threads input
-        let threads: usize;
-        loop {
-            input = prompt("Number of Threads to use?: ");
+        // get valid threads number input
+        let threads: usize = loop {
+            let input = prompt("Number of Threads to use?: ");
             match get_value(&input) {
-                Ok(i) => {
-                    if i < 1 {
-                        println!("Minimum number of threads is 1");
-                        continue;
-                    }
-                    threads = i;
-                    break;
-                }
-                Err(e) => {
-                    eprintln!("Error: {}", e);
-                    continue;
-                }
+                Ok(i) if i >= 1 => break i,
+                Ok(_) => println!("Minimum number of threads is 1"),
+                Err(e) => eprintln!("Error: {}", e),
             }
-        }
+        };
 
         // prepare the list of numbers to be search
         let odds: Vec<u32> = (3..num).filter(|n| n % 2 != 0).collect();
