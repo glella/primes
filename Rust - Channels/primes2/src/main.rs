@@ -1,5 +1,4 @@
 // RUSTFLAGS="-C target-cpu=native" cargo build --release
-
 use std::sync::mpsc;
 use std::thread;
 use std::time::Instant;
@@ -73,6 +72,8 @@ fn search(vectors: Vec<Vec<u32>>) -> Vec<u32> {
 
 fn main() {
     println!("Looks for prime numbers from 1 to your input");
+    let logical_cores = num_cpus::get();
+    println!("Number of logical cores: {}", logical_cores);
 
     loop {
         // get valid limit number input
