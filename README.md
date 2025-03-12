@@ -6,6 +6,8 @@ Simple exercise to play with different languages while benchmarking their perfor
 
 Have run them on my MacBook Pro, Mate9, KeyOne, Note8, Essential PH-1, iPhone X (Pythonista), Gemini, Note9, iPhone 12 (using compiled libraries / native code in iOS app), Fold4.
 
+Update March 2025 - start updating with latest version - Starting with finishing up Zig Threads version
+
 -----------------------------------------------
 
 Results on a Late 2013 15" Macbook Pro (2.3 GHz Quad-Core i7 - 16GB RAM - Catalina):
