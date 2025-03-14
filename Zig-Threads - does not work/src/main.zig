@@ -59,9 +59,9 @@ pub fn main() !void {
         const num: u32 = try userInput("Seek until what integer number?: ");
         var result = try std.ArrayList(u32).initCapacity(allocator, 664579); // 664,579 primes in 10M
 
-        // Create an array of numbers to be iterated upon and evaluated  
+        // Create an array of numbers to be iterated upon and evaluated
         const oddCount = (num - 3 + 2) / 2; // Calculate the number of odd numbers in the range
-        var arr: []u32 = try allocator.alloc(u32, oddCount); // Allocate an array of the appropriate size      
+        var arr: []u32 = try allocator.alloc(u32, oddCount); // Allocate an array of the appropriate size
         // Fill the array with odd numbers
         var idx: usize = 0;
         var j: u32 = 3;
@@ -81,7 +81,7 @@ pub fn main() !void {
 
         // start the clock
         var timer: std.time.Timer = try std.time.Timer.start();
-        
+
         try result.append(2); // add 2 manually as we start checking at 3
 
         // // for (locks, threads) |mut lock, mut thread| {
@@ -91,11 +91,11 @@ pub fn main() !void {
         // //         for (arr) |i| {
         // //             if (isPrime(i)) {
         // //                 try result.append(i);
-        // //             } 
+        // //             }
         // //         }
         // //         lock.unlock();
         // //     });
-            
+
         // // }
 
         // // for (threads) |mut thread| {
@@ -107,7 +107,7 @@ pub fn main() !void {
         // for (arr) |i| {
         //    if (isPrime(i)) {
         //         try result.append(i);
-        //     } 
+        //     }
         // }
 
         // stop the clock
@@ -135,18 +135,24 @@ test " for capture" {
 
     // Iterate over both arrays simultaneously
     for (a, b) |x, y| {
-    std.debug.print("x = {}, y = {}\n", .{ x, y });
+        std.debug.print("x = {}, y = {}\n", .{ x, y });
     }
 }
 
 fn thunk(num_threads: usize, thread_id: usize) void {
-    std.debug.print("{}/{}\n", .{ thread_id, num_threads, });
+    std.debug.print("{}/{}\n", .{
+        thread_id,
+        num_threads,
+    });
 }
 
 test "threads test" {
     var child_threads: [7]std.Thread = undefined;
 
-    for (child_threads, 0..) |thread, i| thread = try std.Thread.spawn(.{}, thunk, .{ 8, i + 1, });
+    for (child_threads, 0..) |thread, i| thread = try std.Thread.spawn(.{}, thunk, .{
+        8,
+        i + 1,
+    });
     thunk(8, 0);
 
     for (child_threads) |thread| thread.join();
