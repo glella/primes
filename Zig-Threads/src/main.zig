@@ -33,7 +33,7 @@ fn isPrime(number: u32) bool {
         0, 1 => return false,
         2 => return true,
         else => {
-            if (number % 2 == 0) return false;
+            // if (number % 2 == 0) return false; // we skip even numbers
             var divisor: u32 = 3;
             while (divisor * divisor <= number) : (divisor += 2) {
                 if (number % divisor == 0) return false;
