@@ -47,6 +47,7 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 |                  |             |                       | java -jar primes.jar                                          |
 | Julia 1.6.0      |    0.162    | sequential            | julia primes.jl                                               |
 | Zig 0.11         |    0.135    | sequential            | zig build-exe primes.zig -O ReleaseSafe                       |
+| Zig 0.15 threads |    0.031    | threads               | zig build-exe src/main.zig -O ReleaseFast                     |
 | V 0.2.2          |    0.131    | sequential            | v -autofree primes.v                                          |
 | Nim 1.6.10       |    0.148    | sequential            | nim c -d:release primes.nim                                   |
 | Nim threads      |    0.052    | spawn & channels      | nim c -d:release --threads:on primes_threads.nim              |
@@ -54,10 +55,10 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 Comments:
 
 - NASM, C languages, Rust, Java, Kotlin, V and Zig very close in performance single threaded.
-- Rust is the fastest when comparing concurrent versions.
+- Rust is the fastest when comparing concurrent versions. Zig is as fast as Rust.
 - Crystal performed admirably compared to Go, C languages and Swift while being almost as fun to work with as Ruby.
 - V was easy and fun to use. Needs to mature more and improve documentation / examples.
-- Did not enjoy Zig too much. Felt unnecessarily archaic (ie no strings) but seamless and safe C interoperability is intriguing.
+- Zig has improved significantly and is nice to work with. Still prefer Rust but Zig has been maturing.
 - Nim was nice to work with. Documentation and info is very good.
 - Very easy to make Python Module and Ruby Gem in Rust landing these interpreted languages among the top performers. -> Short tutorial included in each folder.
 - Surprising size of GO's executable (2.1 MB), and Kotlin's bytecode (1.5 MB) given the significant runtimes.
@@ -67,7 +68,8 @@ Time in millisecs - Multithreaded:
 | Pos |   Language      |  Time  | Exec size |
 | --- | --------------- | ------ | --------- |
 |  1  | Rust            |  29 ms |  321 KB   |
-|  2  | Ruby & Rust     |  33 ms |           |
+|  1  | Zig             |  31 ms |  257 KB   |
+|  2  | Ruby & Rust     |  33 ms |         |
 |  3  | Crystal         |  58 ms |  436 KB   |
 |  4  | Go              |  71 ms |  2.1 MB   |
 |  5  | Swift           |  92 ms |  272 KB   |
@@ -89,6 +91,8 @@ c) Using Mutex & Arc. (Shared state concurrency - the opposite of Go's approach)
 
 - Rust has a much simpler 1:1 model where each thread equates to an operating system thread as it tries to keep a very minimal runtime, with the Rayon library providing access to a model closer to Go ("It guarantees data-race free executions and takes advantage of parallelism when sensible, based on work-load at runtime.")
 
+- Zig - used for concurrency:  Thread pool for parallel execution, WaitGroup for synchronization and Mutex for thread safety while getting results from threads.
+
 - Crystal's model is based on Go's in terms of syntax. Very easy to get going. Experimental multithreading now.
 Before it had concurrency support but not parallelism: several tasks can be executed, and a bit of time will be spent on each of these, but two code paths are never executed at the same exact time.
 To achieve concurrency, Crystal has fibers. A fiber is in a way similar to an operating system thread except that it's much more lightweight and its execution is managed internally by the process.
@@ -102,12 +106,11 @@ Invaluable tool: Compiler Explorer <https://gcc.godbolt.org/>
 -----------------------------------------------
 
 I like Go's simplicity. Crystal is simpler and faster. Swift very nice to work with. V is not there yet but fun to use.
-Rust, Crystal and Zig are my top languaages and in that order. Rust overall, Crystal for simplicity and Zig for a better C but yet immature.
-Nim is in the middle between Crystal and Zig - not as easy to use as Crystal, not as bare metal as Zig and also immature in terms of books / code examples and still evolving.
+Rust, Crystal and Zig are my top languaages and in that order. Rust overall, Crystal for simplicity and Zig nice to program in.
 
 Language of choice: Rust -> gives you control and clarity of what you are doing, it has a very helpful compiler, awesome tools, great libraries, very straightforward memory model that helps you to avoid many errors, no significant runtime, good documentation and helpful community. When programs compile they run with no runtime surprises. It is fast and efficient and keeps on improving at a fast pace.
 
-When working on a new problem most of the time I find myself creating a prototype with Python or Ruby/Crystal, but every time I end up writing it in Rust for optimal performance and robustness.
+When working on a new problem most of the time I find myself going straight ahead with Rust now - no more protoryping with Python or Ruby/Crystal. Will keep on exploring Zig more.
 
 -----------------------------------------------
 
