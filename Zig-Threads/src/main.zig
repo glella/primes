@@ -18,7 +18,7 @@ var timer: Timer = undefined;
 // Constants for optimization
 const PRIMES_IN_10M = 664579; // Number of primes in first 10 million numbers
 
-// Type for chunk of odd numbers to be tested
+// Type for chunk of odd numbers to be tested and later deinitialized
 const ThreadWorkload = struct {
     numbers: std.ArrayList(u32),
 
@@ -114,10 +114,10 @@ fn distributeWorkload(allocator: std.mem.Allocator, upper_limit: u32, thread_cou
     return workloads;
 }
 
-// Prime finding implementation
+// Prime finding parallel implementation
 fn findPrimesParallel(allocator: std.mem.Allocator, upper_limit: u32, thread_count: u32) !std.ArrayList(u32) {
     // Initialize result array with estimated capacity
-    const estimated_capacity = if (upper_limit > 10_000_000) PRIMES_IN_10M else upper_limit / 10;
+    const estimated_capacity = if (upper_limit <= 10_000_000) PRIMES_IN_10M else upper_limit / 10;
     var result = try std.ArrayList(u32).initCapacity(allocator, estimated_capacity);
     errdefer result.deinit();
 
@@ -159,7 +159,7 @@ fn findPrimesParallel(allocator: std.mem.Allocator, upper_limit: u32, thread_cou
                 defer local_primes.deinit();
 
                 for (numbers) |num| {
-                    // No need to check if even since we only generate odd numbers (except 2)
+                    // No need to check even num since we only generate odd numbers (except 2)
                     if (isPrime(num)) {
                         local_primes.append(num) catch return;
                     }

@@ -55,10 +55,9 @@ Time in secs.millisecs searching until 1M - Finding 78,498 primes:
 Comments:
 
 - NASM, C languages, Rust, Java, Kotlin, V and Zig very close in performance single threaded.
-- Rust is the fastest when comparing concurrent versions. Zig is as fast as Rust.
+- Rust & Zig are the fastest when comparing concurrent versions.
 - Crystal performed admirably compared to Go, C languages and Swift while being almost as fun to work with as Ruby.
 - V was easy and fun to use. Needs to mature more and improve documentation / examples.
-- Zig has improved significantly and is nice to work with. Still prefer Rust but Zig has been maturing.
 - Nim was nice to work with. Documentation and info is very good.
 - Very easy to make Python Module and Ruby Gem in Rust landing these interpreted languages among the top performers. -> Short tutorial included in each folder.
 - Surprising size of GO's executable (2.1 MB), and Kotlin's bytecode (1.5 MB) given the significant runtimes.
@@ -68,8 +67,8 @@ Time in millisecs - Multithreaded:
 | Pos |   Language      |  Time  | Exec size |
 | --- | --------------- | ------ | --------- |
 |  1  | Rust            |  29 ms |  321 KB   |
-|  1  | Zig             |  31 ms |  257 KB   |
-|  2  | Ruby & Rust     |  33 ms |         |
+|  1  | Zig             |  28 ms |  257 KB   |
+|  2  | Ruby & Rust     |  33 ms |           |
 |  3  | Crystal         |  58 ms |  436 KB   |
 |  4  | Go              |  71 ms |  2.1 MB   |
 |  5  | Swift           |  92 ms |  272 KB   |
@@ -106,7 +105,7 @@ Invaluable tool: Compiler Explorer <https://gcc.godbolt.org/>
 -----------------------------------------------
 
 I like Go's simplicity. Crystal is simpler and faster. Swift very nice to work with. V is not there yet but fun to use.
-Rust, Crystal and Zig are my top languaages and in that order. Rust overall, Crystal for simplicity and Zig nice to program in.
+Rust, Zig and Crystal are my top languages and in that order. Rust overall, Crystal for simplicity and Zig nice to program in.
 
 Language of choice: Rust -> gives you control and clarity of what you are doing, it has a very helpful compiler, awesome tools, great libraries, very straightforward memory model that helps you to avoid many errors, no significant runtime, good documentation and helpful community. When programs compile they run with no runtime surprises. It is fast and efficient and keeps on improving at a fast pace.
 
