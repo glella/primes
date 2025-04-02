@@ -13,5 +13,5 @@ crate-type = ["cdylib"]
 name = "primesrs"
 
 [dependencies.pyo3]
-version = "0.13.2"
+version = "0.24.1"
 features = ["extension-module"]
